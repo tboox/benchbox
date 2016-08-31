@@ -19,7 +19,7 @@ task("coroutine")
             module = path.basename(module)
 
             -- run the target task
-            task.run("run", {target = "coroutine_" .. module .. "_" .. testname}, option.get("arguments"))
+            task.run("run", {target = "coroutine_" .. module .. "_" .. testname, arguments = option.get("arguments")})
         end
     end)
 

@@ -1,5 +1,5 @@
 -- enable libmill?
---if is_option("libmill") then
+if is_option("libmill") then
 
     -- add target
     target("coroutine_libmill_switch")
@@ -12,4 +12,4 @@
 
         -- add package
         add_packages("libmill", "tbox")
---end
+end

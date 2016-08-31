@@ -25,6 +25,10 @@
  * includes
  */
 #include "tbox/tbox.h"
+#ifndef asm
+#   define asm __tb_asm__
+#endif
+#include "libmill/libmill.h"
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * types
@@ -44,25 +48,15 @@
 static tb_hong_t    g_startime = 0;
 
 // the switch count
-static tb_size_t    g_switchcount = COUNT;
+static tb_long_t    g_switchcount = COUNT;
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * implementaiton
  */
-static tb_void_t switchtask(tb_pointer_t priv)
+static coroutine tb_void_t switchtask()
 {
     // loop
-    while (g_switchcount--) ;//taskyield();
-
-    // computing time
-    tb_hong_t time = tb_mclock() - g_startime;
-
-    // trace
-    tb_trace_i("libmill: switch: %d, %lld ms", COUNT, time);
-
-
-    // exit tbox
-    tb_exit();
+    while (g_switchcount-- > 0) yield();
 }
 
 /* //////////////////////////////////////////////////////////////////////////////////////
@@ -76,11 +70,17 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     // init start time
     g_startime = tb_mclock();
 
-    tb_used(switchtask);
+    // create task
+    while (g_switchcount-- > 0) go(switchtask());
 
-    tb_trace_i("adadasd");
+    // computing time
+    tb_hong_t time = tb_mclock() - g_startime;
 
-    while (*argv) tb_trace_i("%s", *argv++);
+    // trace
+    tb_trace_i("libmill: switch: %d, %lld ms", COUNT, time);
+
+    // exit tbox
+    tb_exit();
 
     // ok
     return 0;
