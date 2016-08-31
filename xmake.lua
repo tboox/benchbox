@@ -40,4 +40,4 @@ end
 add_packagedirs("pkg") 
 
 -- add projects
-add_subfiles("src/**/xmake.lua")
+add_subdirs("src/**")
