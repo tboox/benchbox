@@ -39,5 +39,5 @@ end
 -- add package directories
 add_packagedirs("pkg") 
 
--- add projects
-add_subdirs("src/**")
+-- add subprojects
+add_subdirs("src")
