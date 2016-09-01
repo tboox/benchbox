@@ -17,7 +17,7 @@
  * Copyright (C) 2016-2020, ruki All rights reserved.
  *
  * @author      ruki
- * @file        case2.c
+ * @file        main.c
  *
  */
 
@@ -35,7 +35,7 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     if (!tb_init(tb_null, tb_null)) return -1;
 
     // trace
-    tb_trace_i("test1: case2");
+    tb_trace_i("case2: test1");
 
     // exit tbox
     tb_exit();

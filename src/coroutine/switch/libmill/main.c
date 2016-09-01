@@ -17,7 +17,7 @@
  * Copyright (C) 2016-2020, ruki All rights reserved.
  *
  * @author      ruki
- * @file        libmill.c
+ * @file        main.c
  *
  */
 
@@ -77,7 +77,7 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     tb_hong_t time = tb_mclock() - g_startime;
 
     // trace
-    tb_trace_i("libmill: switch: %d, %lld ms", COUNT, time);
+    tb_trace_i("switch: libmill: %d, %lld ms", COUNT, time);
 
     // exit tbox
     tb_exit();

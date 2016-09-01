@@ -16,10 +16,10 @@ for _, taskname in ipairs(os.dirs("*"), path.basename) do
             assert(casename, "no given testing name, please run `$xmake " .. taskname .. " --help` for getting more info.")
 
             -- walk all tests
-            for _, testname in ipairs(os.dirs(path.join(path.join(os.scriptdir(), taskname), "*")), path.basename) do
+            for _, testname in ipairs(os.dirs(format("%s/%s/%s/*", os.scriptdir(), taskname, casename)), path.basename) do
 
                 -- run the target task
-                task.run("run", {target = taskname .. "_" .. testname .. "_" .. casename, arguments = option.get("arguments")})
+                task.run("run", {target = taskname .. "_" .. casename .. "_" .. testname, arguments = option.get("arguments")})
             end
         end)
 
@@ -34,7 +34,23 @@ for _, taskname in ipairs(os.dirs("*"), path.basename) do
                         -- options
                     ,   options = 
                         {
-                            {'n', "casename",   "kv", nil,      "The testing name."         }      
+                            {'n', "casename",   "kv", nil,      "The case name."            
+                                                                
+                                                                -- show all cases
+                                                              , function () 
+
+                                                                    -- imports
+                                                                    import("core.project.project")
+
+                                                                    -- make description
+                                                                    local description = {}
+                                                                    for i, casename in ipairs(os.dirs(format("%s/src/%s/*", project.directory(), taskname)), path.basename) do
+                                                                        description[i] = "    - " .. casename
+                                                                    end
+
+                                                                    -- get it
+                                                                    return description
+                                                                end                         }
                         ,   {}
                         ,   {nil, "arguments",  "vs", nil,      "The script arguments."     }
                         }

@@ -17,7 +17,7 @@
  * Copyright (C) 2016-2020, ruki All rights reserved.
  *
  * @author      ruki
- * @file        libtask.c
+ * @file        main.c
  *
  */
 
@@ -59,7 +59,7 @@ static tb_void_t switchtask(tb_pointer_t priv)
     tb_hong_t time = tb_mclock() - g_startime;
 
     // trace
-    tb_trace_i("libtask: switch: %d, %lld ms", COUNT, time);
+    tb_trace_i("switch: libtask: %d, %lld ms", COUNT, time);
 
     // exit all tasks
     taskexitall(0);

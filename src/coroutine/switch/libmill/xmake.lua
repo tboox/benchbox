@@ -1,8 +1,8 @@
--- enable libtask?
-if is_option("libtask") then
+-- enable libmill?
+if is_option("libmill") then
 
     -- add target
-    target("coroutine_libtask_switch")
+    target("coroutine_switch_libmill")
 
         -- set kind
         set_kind("binary")
@@ -11,5 +11,5 @@ if is_option("libtask") then
         add_files("*.c")
 
         -- add package
-        add_packages("libtask", "tbox")
+        add_packages("libmill", "tbox")
 end
