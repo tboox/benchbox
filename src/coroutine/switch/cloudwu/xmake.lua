@@ -12,4 +12,7 @@ if is_option("cloudwu_coroutine") then
 
         -- add package
         add_packages("cloudwu_coroutine", "tbox")
+
+        -- dummy run
+        on_run(function () end)
 end

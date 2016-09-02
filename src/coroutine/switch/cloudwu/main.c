@@ -70,7 +70,7 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
         duration = tb_mclock() - duration;
 
         // trace
-        tb_trace_i("switch: libmill: %d switches in %lld ms, %lld switches per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
+        tb_trace_i("switch: cloudwu: %d switches in %lld ms, %lld switches per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
 
         // exit scheduler
         coroutine_close(scheduler);
