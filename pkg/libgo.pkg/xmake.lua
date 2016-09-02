@@ -16,6 +16,9 @@ option("libgo")
     -- add links for checking
     add_links("go")
 
+    -- set languages
+    set_languages("cxx11")
+
     -- add link directories
     add_linkdirs("lib/$(plat)/$(arch)")
 
