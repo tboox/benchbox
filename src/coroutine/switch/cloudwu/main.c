@@ -25,10 +25,7 @@
  * includes
  */
 #include "tbox/tbox.h"
-#ifndef asm
-#   define asm __tb_asm__
-#endif
-#include "libmill/libmill.h"
+#include "coroutine/coroutine.h"
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * macros
@@ -40,10 +37,11 @@
 /* //////////////////////////////////////////////////////////////////////////////////////
  * implementaiton
  */
-static coroutine tb_void_t switchtask(tb_size_t count)
+static tb_void_t switchtask(struct schedule* scheduler, tb_pointer_t priv)
 {
     // loop
-    while (count--) yield();
+    tb_size_t count = (tb_size_t)priv;
+    while (count--) coroutine_yield(scheduler);
 }
 
 /* //////////////////////////////////////////////////////////////////////////////////////
@@ -54,21 +52,29 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     // init tbox
     if (!tb_init(tb_null, tb_null)) return -1;
 
-    // init duration
-    tb_hong_t duration = tb_mclock();
+    // init schedule
+    struct schedule* scheduler = coroutine_open();
+    if (scheduler)
+    {
+        // init coroutine
+        tb_int_t co = coroutine_new(scheduler, switchtask, (tb_pointer_t)COUNT);
 
-    // create task
-    go(switchtask(COUNT >> 1));
+        // init duration
+        tb_hong_t duration = tb_mclock();
 
-    // scheduling
-    tb_size_t count = COUNT >> 1;
-    while (count--) yield();
+        // run scheduler
+        while (coroutine_status(scheduler, co))
+            coroutine_resume(scheduler, co);
 
-    // computing time
-    duration = tb_mclock() - duration;
+        // computing time
+        duration = tb_mclock() - duration;
 
-    // trace
-    tb_trace_i("switch: libmill: %d switches in %lld ms, %lld switches per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
+        // trace
+        tb_trace_i("switch: libmill: %d switches in %lld ms, %lld switches per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
+
+        // exit scheduler
+        coroutine_close(scheduler);
+    }
 
     // exit tbox
     tb_exit();
