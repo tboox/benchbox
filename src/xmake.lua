@@ -16,14 +16,14 @@ for _, taskname in ipairs(os.dirs("*"), path.basename) do
             local casename = option.get("casename")
             assert(casename, "no given testing name, please run `$xmake " .. taskname .. " --help` for getting more info.")
 
+            -- load project
+            project.load()
+
             -- walk all tests
             for _, testname in ipairs(os.dirs(format("%s/%s/%s/*", os.scriptdir(), taskname, casename)), path.basename) do
 
                 -- the target name
                 local targetname = taskname .. "_" .. casename .. "_" .. testname
-
-                -- load project
-                project.load()
 
                 -- run the target task
                 if project.target(targetname) then
