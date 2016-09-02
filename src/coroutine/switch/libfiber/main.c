@@ -40,7 +40,7 @@
 /* //////////////////////////////////////////////////////////////////////////////////////
  * implementaiton
  */
-static tb_pointer_t switchtask(ACL_FIBER* fiber, tb_pointer_t priv)
+static tb_void_t switchtask(ACL_FIBER* fiber, tb_pointer_t priv)
 {
     // loop
     tb_size_t count = (tb_size_t)priv;
