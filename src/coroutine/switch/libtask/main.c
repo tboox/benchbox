@@ -28,7 +28,7 @@
 #include "task/task.h"
 
 /* //////////////////////////////////////////////////////////////////////////////////////
- * types
+ * macros
  */
 
 // the task stack size
@@ -42,10 +42,7 @@
  */
 
 // the start time
-static tb_hong_t    g_startime = 0;
-
-// the switch count
-static tb_size_t    g_switchcount = COUNT;
+static tb_hong_t g_startime = 0;
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * implementaiton
@@ -53,13 +50,14 @@ static tb_size_t    g_switchcount = COUNT;
 static tb_void_t switchtask(tb_pointer_t priv)
 {
     // loop
-    while (g_switchcount--) taskyield();
+    tb_size_t count = (tb_size_t)priv;
+    while (count--) taskyield();
 
     // computing time
-    tb_hong_t time = tb_mclock() - g_startime;
+    tb_hong_t duration = tb_mclock() - g_startime;
 
     // trace
-    tb_trace_i("switch: libtask: %d, %lld ms", COUNT, time);
+    tb_trace_i("switch: libtask: %d switches in %lld ms, %lld switches per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
 
     // exit all tasks
     taskexitall(0);
@@ -80,14 +78,5 @@ tb_void_t taskmain(tb_int_t argc, tb_char_t** argv)
     g_startime = tb_mclock();
 
     // create task
-    taskcreate(switchtask, 0, STACK);
-    taskcreate(switchtask, 0, STACK);
-    taskcreate(switchtask, 0, STACK);
-    taskcreate(switchtask, 0, STACK);
-    taskcreate(switchtask, 0, STACK);
-    taskcreate(switchtask, 0, STACK);
-    taskcreate(switchtask, 0, STACK);
-    taskcreate(switchtask, 0, STACK);
-    taskcreate(switchtask, 0, STACK);
-    taskcreate(switchtask, 0, STACK);
+    taskcreate(switchtask, (tb_pointer_t)COUNT, STACK);
 }

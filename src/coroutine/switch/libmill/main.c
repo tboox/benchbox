@@ -31,32 +31,19 @@
 #include "libmill/libmill.h"
 
 /* //////////////////////////////////////////////////////////////////////////////////////
- * types
+ * macros
  */
-
-// the task stack size
-#define STACK       (32768)
 
 // the switch count
 #define COUNT       (10000000)
 
 /* //////////////////////////////////////////////////////////////////////////////////////
- * globals
- */
-
-// the start time
-static tb_hong_t    g_startime = 0;
-
-// the switch count
-static tb_long_t    g_switchcount = COUNT;
-
-/* //////////////////////////////////////////////////////////////////////////////////////
  * implementaiton
  */
-static coroutine tb_void_t switchtask()
+static coroutine tb_void_t switchtask(tb_size_t count)
 {
     // loop
-    while (g_switchcount-- > 0) yield();
+    while (count-- > 0) yield();
 }
 
 /* //////////////////////////////////////////////////////////////////////////////////////
@@ -67,17 +54,21 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     // init tbox
     if (!tb_init(tb_null, tb_null)) return -1;
 
-    // init start time
-    g_startime = tb_mclock();
+    // init duration
+    tb_hong_t duration = tb_mclock();
 
     // create task
-    while (g_switchcount-- > 0) go(switchtask());
+    go(switchtask(COUNT >> 1));
+
+    // scheduling
+    tb_size_t count = COUNT >> 1;
+    while (count--) yield();
 
     // computing time
-    tb_hong_t time = tb_mclock() - g_startime;
+    duration = tb_mclock() - duration;
 
     // trace
-    tb_trace_i("switch: libmill: %d, %lld ms", COUNT, time);
+    tb_trace_i("switch: libmill: %d switches in %lld ms, %lld switches per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
 
     // exit tbox
     tb_exit();
