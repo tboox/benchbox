@@ -41,13 +41,17 @@ static tb_void_t channeltask_recv(co_chan<tb_size_t>& channel)
 {
     // loop
     tb_size_t value;
-    while (1) channel >> value;
+    while (1) 
+    {
+        channel >> value;
+        if (!value) break;
+    }
 }
 static tb_void_t channeltask_send(co_chan<tb_size_t>& channel)
 {
     // loop
     tb_size_t count = COUNT;
-    while (count--) channel << cout;
+    while (count--) channel << count;
 }
 
 /* //////////////////////////////////////////////////////////////////////////////////////
@@ -65,8 +69,8 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     tb_hong_t duration = tb_mclock();
    
     // scheduling
-    go []{ channeltask_recv(channel); };
-    go []{ channeltask_send(channel); };
+    go [&]{ channeltask_recv(channel); };
+    go [&]{ channeltask_send(channel); };
     co_sched.RunUntilNoTask();
 
     // computing time

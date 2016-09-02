@@ -45,6 +45,7 @@ static coroutine tb_void_t channeltask(chan channel)
     // loop
     tb_size_t value;
     while (1) value = chr(channel, tb_size_t);
+    tb_used(&value);
 }
 
 /* //////////////////////////////////////////////////////////////////////////////////////
