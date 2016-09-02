@@ -11,5 +11,5 @@ if is_option("cloudwu_coroutine") then
         add_files("*.c")
 
         -- add package
-        add_packages("cloudwu_coroutine", "tbox")
+        add_packages("cloudwu_coroutine", "tbox", "base")
 end

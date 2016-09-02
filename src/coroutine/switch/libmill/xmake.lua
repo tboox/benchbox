@@ -11,5 +11,5 @@ if is_option("libmill") then
         add_files("*.c")
 
         -- add package
-        add_packages("libmill", "tbox")
+        add_packages("libmill", "tbox", "base")
 end

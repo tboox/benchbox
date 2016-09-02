@@ -11,5 +11,5 @@ if is_option("libtask") then
         add_files("*.c")
 
         -- add package
-        add_packages("libtask", "tbox")
+        add_packages("libtask", "tbox", "base")
 end
