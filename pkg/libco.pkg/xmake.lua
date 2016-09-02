@@ -20,7 +20,7 @@ option("libco")
     add_linkdirs("lib/$(plat)/$(arch)")
 
     -- add c includes for checking
-    add_cincludes("libco/libco.h")
+    add_cxxincludes("libco/libco.h")
 
     -- add include directories
     add_includedirs("inc/$(plat)", "inc")

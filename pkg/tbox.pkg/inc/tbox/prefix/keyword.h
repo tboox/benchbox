@@ -179,6 +179,14 @@
 #   define __tb_export__         
 #endif
 
+#if defined(TB_COMPILER_IS_GCC) && __GNUC__ >= 3
+#   define __tb_deprecated__                    __attribute__((deprecated))
+#elif defined(TB_COMPILER_IS_MSVC) && defined(_MSC_VER) && _MSC_VER >= 1300
+#   define __tb_deprecated__                    __declspec(deprecated)
+#else
+#   define __tb_deprecated__
+#endif
+
 // has feature
 #ifdef __has_feature
 #   define __tb_has_feature__(x)                            __has_feature(x)
@@ -206,6 +214,30 @@
 #else
 #   define __tb_no_sanitize_address__
 #endif
+
+/*! the type reference keyword for defining tb_xxxx_ref_t
+ *
+ * typedef __tb_typeref__(xxxx);
+ *
+ *
+ * suppress gcc 4.9 on c++ codes warning: '__tb_yyyy_t' has a field '__tb_yyyy_t::xxxx' whose type uses the anonymous namespace
+ *
+ * @code
+ *
+   typedef struct{}*    tb_xxxx_ref_t;
+  
+   typedef struct __tb_yyyy_t
+   {
+       tb_xxxx_ref_t    xxxx;
+  
+   }__tb_yyyy_t;
+
+ *
+ *
+ * @endcode
+ * 
+ */
+#define __tb_typeref__(object)                              struct __tb_##object##_dummy_t{tb_int_t dummy;}* tb_##object##_ref_t
 
 // macros
 #define __tb_mstring__(x)                                   #x

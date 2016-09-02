@@ -55,6 +55,7 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     tb_hong_t duration = tb_mclock();
 
     // create task
+    tb_used(switchtask);
 
     // scheduling
 

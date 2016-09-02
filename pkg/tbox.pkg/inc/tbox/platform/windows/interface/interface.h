@@ -27,6 +27,7 @@
  * includes
  */
 #include "prefix.h"
+#include "ole32.h"
 #include "user32.h"
 #include "ws2_32.h"
 #include "mswsock.h"
