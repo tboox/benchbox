@@ -14,7 +14,7 @@ option("libfiber")
     add_defines_h_if_ok("$(prefix)_PACKAGE_HAVE_LIBFIBER")
 
     -- add links for checking
-    add_links("mill")
+    add_links("fiber", "acl")
 
     -- add link directories
     add_linkdirs("lib/$(plat)/$(arch)")

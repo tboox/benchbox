@@ -37,7 +37,7 @@
 /* //////////////////////////////////////////////////////////////////////////////////////
  * implementaiton
  */
-static coroutine tb_void_t switchtask(tb_size_t count)
+static tb_void_t switchtask(tb_size_t count)
 {
     // loop
 //    while (count--) yield();
