@@ -10,6 +10,7 @@ for _, taskname in ipairs(os.dirs("*"), path.basename) do
             -- imports
             import("core.base.option")
             import("core.project.task")
+            import("core.project.project")
 
             -- get case name
             local casename = option.get("casename")
@@ -18,8 +19,16 @@ for _, taskname in ipairs(os.dirs("*"), path.basename) do
             -- walk all tests
             for _, testname in ipairs(os.dirs(format("%s/%s/%s/*", os.scriptdir(), taskname, casename)), path.basename) do
 
+                -- the target name
+                local targetname = taskname .. "_" .. casename .. "_" .. testname
+
+                -- load project
+                project.load()
+
                 -- run the target task
-                task.run("run", {target = taskname .. "_" .. casename .. "_" .. testname, arguments = option.get("arguments")})
+                if project.target(targetname) then
+                    task.run("run", {target = targetname, arguments = option.get("arguments")})
+                end
             end
         end)
 
