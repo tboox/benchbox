@@ -10,11 +10,15 @@ for _, taskname in ipairs(os.dirs("*"), path.basename) do
             -- imports
             import("core.base.option")
             import("core.project.task")
+            import("core.project.config")
             import("core.project.project")
 
             -- get case name
             local casename = option.get("casename")
             assert(casename, "no given testing name, please run `$xmake " .. taskname .. " --help` for getting more info.")
+
+            -- load config
+            config.load()
 
             -- load project
             project.load()
