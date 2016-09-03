@@ -37,10 +37,12 @@
 /* //////////////////////////////////////////////////////////////////////////////////////
  * implementaiton
  */
-static tb_void_t switchtask(tb_size_t count)
+static tb_pointer_t switchtask(tb_pointer_t priv)
 {
     // loop
-//    while (count--) yield();
+    tb_size_t* pcount = (tb_size_t*)priv;
+    while (*pcount--) co_yield_ct();
+    return 0;
 }
 
 /* //////////////////////////////////////////////////////////////////////////////////////
@@ -51,19 +53,25 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     // init tbox
     if (!tb_init(tb_null, tb_null)) return -1;
 
+    // create coroutine
+    stCoRoutine_t*  co = tb_null;
+    tb_size_t       count = COUNT;
+    co_create(&co, tb_null, switchtask, &count);
+
     // init duration
     tb_hong_t duration = tb_mclock();
 
-    // create task
-    tb_used(switchtask);
-
     // scheduling
+    while (count) co_resume(co);
 
     // computing time
     duration = tb_mclock() - duration;
 
     // trace
     tb_trace_i("switch: libco: %d switches in %lld ms, %lld switches per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
+
+    // exit coroutine
+    co_release(co);
 
     // exit tbox
     tb_exit();
