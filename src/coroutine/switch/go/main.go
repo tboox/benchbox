@@ -42,10 +42,10 @@ func main(){
     var duration = time.Now().UnixNano()
 
     // create coroutine task
-    go switchtask(COUNT >> 1)
+    go switchtask(COUNT)
 
     // in main goroutine
-    switchtask(COUNT >> 1)
+    switchtask(COUNT)
 
     // computing time
     duration = (time.Now().UnixNano() - duration) / 1000000

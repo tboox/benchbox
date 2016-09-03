@@ -4,8 +4,8 @@ target("coroutine_switch_go")
     -- set kind
     set_kind("binary")
 
-    -- add files
-    add_files("*.c")
+    -- not build
+    on_build(function() end)
 
     -- run it
     on_run(function ()
