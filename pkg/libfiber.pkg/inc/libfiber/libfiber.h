@@ -396,6 +396,7 @@ unsigned long acl_channel_recvul_nb(ACL_CHANNEL *c);
 
 /* master fibers server */
 
+#if 0
 /**
  * 基于协程的服务器主函数入口，该模块可以在 acl_master 服务器控制框架下运行
  * @param argc {int} 使用者传入的参数数组 argv 的大小
@@ -410,7 +411,6 @@ void acl_fiber_server_main(int argc, char *argv[],
 
 /**************************** fiber iostuff *********************************/
 
-#if 0
 ssize_t fiber_read(int fd, void *buf, size_t count);
 ssize_t fiber_readv(int fd, const struct iovec *iov, int iovcnt);
 ssize_t fiber_recv(int sockfd, void *buf, size_t len, int flags);
