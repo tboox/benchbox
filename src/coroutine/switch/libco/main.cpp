@@ -41,7 +41,7 @@ static tb_pointer_t switchtask(tb_pointer_t priv)
 {
     // loop
     tb_size_t* pcount = (tb_size_t*)priv;
-    while (*pcount--) co_yield_ct();
+    while ((*pcount)--) co_yield_ct();
     return 0;
 }
 
