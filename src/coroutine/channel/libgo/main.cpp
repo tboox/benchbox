@@ -17,7 +17,7 @@
  * Copyright (C) 2016-2020, ruki All rights reserved.
  *
  * @author      ruki
- * @file        main.c
+ * @file        main.cpp
  *
  */
 
@@ -37,10 +37,17 @@
 /* //////////////////////////////////////////////////////////////////////////////////////
  * implementaiton
  */
-static tb_void_t channeltask(tb_size_t count)
+static tb_void_t channeltask_recv(co_chan<tb_size_t>& channel)
 {
     // loop
-    while (count--) co_yield;
+    tb_size_t value;
+    while (1) channel >> value;
+}
+static tb_void_t channeltask_send(co_chan<tb_size_t>& channel)
+{
+    // loop
+    tb_size_t count = COUNT;
+    while (count--) channel << cout;
 }
 
 /* //////////////////////////////////////////////////////////////////////////////////////
@@ -51,11 +58,15 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     // init tbox
     if (!tb_init(tb_null, tb_null)) return -1;
 
+    // init channel
+    co_chan<tb_size_t> channel(0);
+
     // init duration
     tb_hong_t duration = tb_mclock();
    
     // scheduling
-    go []{ channeltask(COUNT); };
+    go []{ channeltask_recv(channel); };
+    go []{ channeltask_send(channel); };
     co_sched.RunUntilNoTask();
 
     // computing time
