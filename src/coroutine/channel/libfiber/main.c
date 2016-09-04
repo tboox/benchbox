@@ -40,11 +40,18 @@
 /* //////////////////////////////////////////////////////////////////////////////////////
  * implementaiton
  */
-static tb_void_t channeltask(ACL_FIBER* fiber, tb_pointer_t priv)
+static tb_void_t channeltask_recv(ACL_FIBER* fiber, tb_pointer_t priv)
 {
     // loop
-    tb_size_t count = (tb_size_t)priv;
-    while (count--) acl_fiber_yield();
+    ACL_CHANNEL* channel = (ACL_CHANNEL*)priv;
+    while (1) acl_channel_recvul(channel);
+}
+static tb_void_t channeltask_send(ACL_FIBER* fiber, tb_pointer_t priv)
+{
+    // loop
+    ACL_CHANNEL*    channel = (ACL_CHANNEL*)priv;
+    tb_size_t       count = COUNT;
+    while (count--) acl_channel_sendul(channel, count);
 }
 
 /* //////////////////////////////////////////////////////////////////////////////////////
@@ -55,23 +62,27 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     // init tbox
     if (!tb_init(tb_null, tb_null)) return -1;
 
+    // init channel
+    ACL_CHANNEL* channel = acl_channel_create(sizeof(tb_size_t), 0);
+
     // create task
-    ACL_FIBER* fiber = acl_fiber_create(channeltask, (tb_pointer_t)COUNT, STACK);
-    if (fiber)
-    {
-        // init duration
-        tb_hong_t duration = tb_mclock();
-       
-        // scheduling
-        acl_fiber_schedule();
+    acl_fiber_create(channeltask_recv, channel, STACK);
+    acl_fiber_create(channeltask_send, channel, STACK);
 
-        // computing time
-        duration = tb_mclock() - duration;
+    // init duration
+    tb_hong_t duration = tb_mclock();
+   
+    // scheduling
+    acl_fiber_schedule();
 
-        // trace
-        tb_trace_i("channel: libfiber: %d passes in %lld ms, %lld passes per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
-    }
+    // computing time
+    duration = tb_mclock() - duration;
 
+    // trace
+    tb_trace_i("channel: libfiber: %d passes in %lld ms, %lld passes per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
+
+    // exit channel
+    acl_channel_free(channel);
 
     // exit tbox
     tb_exit();

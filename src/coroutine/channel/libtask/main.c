@@ -47,37 +47,18 @@ static tb_hong_t g_startime = 0;
 /* //////////////////////////////////////////////////////////////////////////////////////
  * implementaiton
  */
-static tb_void_t channeltask(tb_pointer_t priv)
+static tb_void_t channeltask_recv(tb_pointer_t priv)
 {
     // loop
-    Channel* queue = (Channel*)priv;
-    while (1) chanrecvul(queue);
+    Channel* channel = (Channel*)priv;
+    while (1) chanrecvul(channel);
 }
-
-/* //////////////////////////////////////////////////////////////////////////////////////
- * main
- */
-tb_void_t taskmain(tb_int_t argc, tb_char_t** argv)
+static tb_void_t channeltask_send(tb_pointer_t priv)
 {
-    // init tbox
-    if (!tb_init(tb_null, tb_null)) return ;
-
-    // init channel
-    Channel* queue = chancreate(sizeof(tb_size_t), 0);
-
-    // init start time
-    g_startime = tb_mclock();
-
-    // create task
-    taskcreate(channeltask, queue, STACK);
-
-    // scheduling
-    tb_size_t count = COUNT;
-    while (count--)
-    {
-        // push value
-        chansendul(queue, count);
-    }
+    // loop
+    Channel*    channel = (Channel*)priv;
+    tb_size_t   count = COUNT;
+    while (count--) chansendul(channel, count);
 
     // computing time
     tb_hong_t duration = tb_mclock() - g_startime;
@@ -90,4 +71,23 @@ tb_void_t taskmain(tb_int_t argc, tb_char_t** argv)
 
     // exit tbox
     tb_exit();
+}
+
+/* //////////////////////////////////////////////////////////////////////////////////////
+ * main
+ */
+tb_void_t taskmain(tb_int_t argc, tb_char_t** argv)
+{
+    // init tbox
+    if (!tb_init(tb_null, tb_null)) return ;
+
+    // init channel
+    Channel* channel = chancreate(sizeof(tb_size_t), 0);
+
+    // init start time
+    g_startime = tb_mclock();
+
+    // create task
+    taskcreate(channeltask_recv, channel, STACK);
+    taskcreate(channeltask_send, channel, STACK);
 }

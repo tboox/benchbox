@@ -16,11 +16,11 @@ const COUNT = 10000000
 /* //////////////////////////////////////////////////////////////////////////////////////
  * implementaiton
  */
-func channeltask(queue <-chan int){
+func channeltask(channel <-chan int){
 
     for {
 
-        <- queue
+        <- channel
     }
 }
 
@@ -32,21 +32,21 @@ func main(){
     // single cpu
     runtime.GOMAXPROCS(1)
 
-    // make queue
-    queue := make(chan int, 0)
+    // make channel
+    channel := make(chan int, 0)
 
     // init duration
     duration := time.Now().UnixNano()
 
     // create coroutine task
-    go channeltask(queue)
+    go channeltask(channel)
 
     // in main goroutine
     count := COUNT
     for {
 
         count--
-        queue <- count
+        channel <- count
         if count == 0 {
             break
         }

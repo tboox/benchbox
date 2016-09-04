@@ -40,11 +40,11 @@
 /* //////////////////////////////////////////////////////////////////////////////////////
  * implementaiton
  */
-static coroutine tb_void_t channeltask(chan queue)
+static coroutine tb_void_t channeltask(chan channel)
 {
     // loop
     tb_size_t value;
-    while (1) value = chr(queue, tb_size_t);
+    while (1) value = chr(channel, tb_size_t);
 }
 
 /* //////////////////////////////////////////////////////////////////////////////////////
@@ -56,17 +56,17 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     if (!tb_init(tb_null, tb_null)) return -1;
 
     // make input and output passes
-    chan queue = chmake(tb_size_t, 0);
+    chan channel = chmake(tb_size_t, 0);
 
     // init duration
     tb_hong_t duration = tb_mclock();
 
     // create task
     tb_size_t count = COUNT;
-    go(channeltask(queue));
+    go(channeltask(channel));
 
     // scheduling
-    while (count--) chs(queue, tb_size_t, count);
+    while (count--) chs(channel, tb_size_t, count);
 
     // computing time
     duration = tb_mclock() - duration;
