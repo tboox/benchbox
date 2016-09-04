@@ -31,16 +31,20 @@
  * macros
  */
 
+// the task stack size
+#define STACK       (32768)
+
 // the switch count
 #define COUNT       (10000000)
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * implementaiton
  */
-static tb_void_t switchtask(tb_size_t count)
+static tb_pointer_t switchtask(ACL_FIBER* fiber, tb_pointer_t priv)
 {
     // loop
-//    while (count--) yield();
+    tb_size_t count = (tb_size_t)priv;
+    while (count--) acl_fiber_yield();
 }
 
 /* //////////////////////////////////////////////////////////////////////////////////////
@@ -51,19 +55,23 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     // init tbox
     if (!tb_init(tb_null, tb_null)) return -1;
 
-    // init duration
-    tb_hong_t duration = tb_mclock();
-
     // create task
-    tb_used(switchtask);
+    ACL_FIBER* fiber = acl_fiber_create(switchtask, (tb_pointer_t)COUNT, STACK);
+    if (fiber)
+    {
+        // init duration
+        tb_hong_t duration = tb_mclock();
+       
+        // scheduling
+        acl_fiber_schedule();
 
-    // scheduling
+        // computing time
+        duration = tb_mclock() - duration;
 
-    // computing time
-    duration = tb_mclock() - duration;
+        // trace
+        tb_trace_i("switch: libfiber: %d switches in %lld ms, %lld switches per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
+    }
 
-    // trace
-    tb_trace_i("switch: libfiber: %d switches in %lld ms, %lld switches per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
 
     // exit tbox
     tb_exit();
