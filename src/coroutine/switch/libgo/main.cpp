@@ -31,20 +31,16 @@
  * macros
  */
 
-// the task stack size
-#define STACK       (32768)
-
 // the switch count
 #define COUNT       (10000000)
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * implementaiton
  */
-static tb_void_t switchtask(tb_pointer_t priv)
+static tb_void_t switchtask(tb_size_t count)
 {
     // loop
-//    tb_size_t count = (tb_size_t)priv;
-
+    while (count--) co_yield;
 }
 
 /* //////////////////////////////////////////////////////////////////////////////////////
@@ -55,14 +51,12 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     // init tbox
     if (!tb_init(tb_null, tb_null)) return -1;
 
-    // create task
-    //
-
     // init duration
     tb_hong_t duration = tb_mclock();
    
     // scheduling
-    tb_used(switchtask);
+    go []{ switchtask(count); };
+    co_sched.RunUntilNoTask();
 
     // computing time
     duration = tb_mclock() - duration;
