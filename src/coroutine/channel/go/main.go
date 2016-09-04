@@ -16,17 +16,11 @@ const COUNT = 10000000
 /* //////////////////////////////////////////////////////////////////////////////////////
  * implementaiton
  */
-func switchtask(count int){
+func channeltask(queue <-chan int){
 
-    var i = 0
     for {
 
-        i++
-        if i > count {
-           break
-        }
-
-        runtime.Gosched()
+        <- queue
     }
 }
 
@@ -38,18 +32,29 @@ func main(){
     // single cpu
     runtime.GOMAXPROCS(1)
 
+    // make queue
+    queue := make(chan int, 0)
+
     // init duration
-    var duration = time.Now().UnixNano()
+    duration := time.Now().UnixNano()
 
     // create coroutine task
-    go switchtask(COUNT)
+    go channeltask(queue)
 
     // in main goroutine
-    switchtask(COUNT)
+    count := COUNT
+    for {
+
+        count--
+        queue <- count
+        if count == 0 {
+            break
+        }
+    }
 
     // computing time
     duration = (time.Now().UnixNano() - duration) / 1000000
 
     // trace
-    fmt.Printf("switch: go: %d switches in %d ms, %d switches per second\n", COUNT, duration, (1000 * COUNT) / duration)
+    fmt.Printf("channel: go: %d passes in %d ms, %d passes per second\n", COUNT, duration, (1000 * COUNT) / duration)
 }
