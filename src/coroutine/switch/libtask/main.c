@@ -78,5 +78,6 @@ tb_void_t taskmain(tb_int_t argc, tb_char_t** argv)
     g_startime = tb_mclock();
 
     // create task
-    taskcreate(switchtask, (tb_pointer_t)COUNT, STACK);
+    taskcreate(switchtask, (tb_pointer_t)(COUNT >> 1), STACK);
+    taskcreate(switchtask, (tb_pointer_t)(COUNT >> 1), STACK);
 }

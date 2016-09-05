@@ -39,16 +39,27 @@
  */
 
 // the count
-static tb_size_t g_count = COUNT;
+static tb_size_t g_count1 = COUNT >> 1;
+static tb_size_t g_count2 = COUNT >> 1;
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * implementaiton
  */
-PT_THREAD(switchtask(struct pt* task))
+PT_THREAD(switchtask1(struct pt* task))
 {
     // loop
     PT_BEGIN(task);
-    while (g_count--)
+    while (g_count1--)
+    {
+        PT_YIELD(task);
+    }
+    PT_END(task);
+}
+PT_THREAD(switchtask2(struct pt* task))
+{
+    // loop
+    PT_BEGIN(task);
+    while (g_count2--)
     {
         PT_YIELD(task);
     }
@@ -64,14 +75,20 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     if (!tb_init(tb_null, tb_null)) return -1;
 
     // create task
-    struct pt task;
-    PT_INIT(&task);
+    struct pt task1;
+    struct pt task2;
+    PT_INIT(&task1);
+    PT_INIT(&task2);
 
     // init duration
     tb_hong_t duration = tb_mclock();
 
     // scheduling
-    while (g_count) switchtask(&task);
+    while (g_count1 && g_count2) 
+    {
+        switchtask1(&task1);
+        switchtask2(&task2);
+    }
 
     // computing time
     duration = tb_mclock() - duration;

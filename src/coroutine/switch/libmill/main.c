@@ -59,10 +59,10 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
 
     // create task
     tb_size_t count = COUNT;
-    go(switchtask(count));
+    go(switchtask(count >> 1));
 
     // scheduling
-    while (count--) yield();
+    switchtask(count >> 1);
 
     // computing time
     duration = tb_mclock() - duration;

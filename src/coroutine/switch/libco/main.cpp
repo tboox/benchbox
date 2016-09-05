@@ -54,15 +54,22 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     if (!tb_init(tb_null, tb_null)) return -1;
 
     // create coroutine
-    stCoRoutine_t*  co = tb_null;
-    tb_size_t       count = COUNT;
-    co_create(&co, tb_null, switchtask, &count);
+    stCoRoutine_t*  co1 = tb_null;
+    stCoRoutine_t*  co2 = tb_null;
+    tb_size_t       count1 = COUNT >> 1;
+    tb_size_t       count2 = COUNT >> 1;
+    co_create(&co1, tb_null, switchtask, &count1);
+    co_create(&co2, tb_null, switchtask, &count2);
 
     // init duration
     tb_hong_t duration = tb_mclock();
 
     // scheduling
-    while (count) co_resume(co);
+    while (count1 && count2)
+    {
+        co_resume(co1);
+        co_resume(co2);
+    }
 
     // computing time
     duration = tb_mclock() - duration;
@@ -71,7 +78,8 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     tb_trace_i("switch: libco: %d switches in %lld ms, %lld switches per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
 
     // exit coroutine
-    co_release(co);
+    co_release(co1);
+    co_release(co2);
 
     // exit tbox
     tb_exit();

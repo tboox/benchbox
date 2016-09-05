@@ -55,7 +55,8 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     tb_hong_t duration = tb_mclock();
    
     // scheduling
-    go []{ switchtask(COUNT); };
+    go []{ switchtask(COUNT >> 1); };
+    go []{ switchtask(COUNT >> 1); };
     co_sched.RunUntilNoTask();
 
     // computing time

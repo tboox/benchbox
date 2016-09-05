@@ -57,14 +57,18 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     if (scheduler)
     {
         // init coroutine
-        tb_int_t co = coroutine_new(scheduler, switchtask, (tb_pointer_t)COUNT);
+        tb_int_t co1 = coroutine_new(scheduler, switchtask, (tb_pointer_t)(COUNT >> 1));
+        tb_int_t co2 = coroutine_new(scheduler, switchtask, (tb_pointer_t)(COUNT >> 1));
 
         // init duration
         tb_hong_t duration = tb_mclock();
 
         // run scheduler
-        while (coroutine_status(scheduler, co))
-            coroutine_resume(scheduler, co);
+        while (coroutine_status(scheduler, co1) && coroutine_status(scheduler, co2))
+        {
+            coroutine_resume(scheduler, co1);
+            coroutine_resume(scheduler, co2);
+        }
 
         // computing time
         duration = tb_mclock() - duration;

@@ -56,22 +56,20 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     if (!tb_init(tb_null, tb_null)) return -1;
 
     // create task
-    ACL_FIBER* fiber = acl_fiber_create(switchtask, (tb_pointer_t)COUNT, STACK);
-    if (fiber)
-    {
-        // init duration
-        tb_hong_t duration = tb_mclock();
-       
-        // scheduling
-        acl_fiber_schedule();
+    acl_fiber_create(switchtask, (tb_pointer_t)(COUNT >> 1), STACK);
+    acl_fiber_create(switchtask, (tb_pointer_t)(COUNT >> 1), STACK);
 
-        // computing time
-        duration = tb_mclock() - duration;
+    // init duration
+    tb_hong_t duration = tb_mclock();
+   
+    // scheduling
+    acl_fiber_schedule();
 
-        // trace
-        tb_trace_i("switch: libfiber: %d switches in %lld ms, %lld switches per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
-    }
+    // computing time
+    duration = tb_mclock() - duration;
 
+    // trace
+    tb_trace_i("switch: libfiber: %d switches in %lld ms, %lld switches per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
 
     // exit tbox
     tb_exit();
