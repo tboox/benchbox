@@ -5,7 +5,7 @@ set_project("benchbox")
 set_version("1.0.1")
 
 -- set warning all as error
-set_warnings("all", "error")
+set_warnings("all")
 
 -- set language: c99, c++11
 set_languages("c99", "cxx11")
