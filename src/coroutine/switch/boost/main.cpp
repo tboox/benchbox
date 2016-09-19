@@ -59,8 +59,7 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     boost::coroutines::symmetric_coroutine<tb_size_t>::call_type co2(switchtask);
 
     // scheduling
-    tb_size_t count = COUNT >> 1;
-    while (count--)
+    while (co1 && co2)
     {
         co1(COUNT >> 1);
         co2(COUNT >> 1); 
