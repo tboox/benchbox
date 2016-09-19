@@ -17,6 +17,6 @@ option("boost")
     add_links("boost_coroutine", "boost_system")
 
     -- add c++ includes for checking
-    add_cxxincludes("boost/asio.hpp")
+    add_cxxincludes("boost/coroutine/coroutine.hpp")
 
 

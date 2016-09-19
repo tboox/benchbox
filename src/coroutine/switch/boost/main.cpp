@@ -25,8 +25,7 @@
  * includes
  */
 #include "tbox/tbox.h"
-#include <boost/asio.hpp>
-#include <boost/asio/spawn.hpp>
+#include <boost/coroutine/coroutine.hpp>
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * macros
