@@ -14,7 +14,7 @@
  * along with TBox; 
  * If not, see <a href="http://www.gnu.org/licenses/"> http://www.gnu.org/licenses/</a>
  * 
- * Copyright (C) 2009 - 2015, ruki All rights reserved.
+ * Copyright (C) 2009 - 2017, ruki All rights reserved.
  *
  * @author      ruki
  * @file        tbox.h
@@ -46,6 +46,7 @@
 #include "database/database.h"
 #include "algorithm/algorithm.h"
 #include "container/container.h"
+#include "coroutine/coroutine.h"
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * extern

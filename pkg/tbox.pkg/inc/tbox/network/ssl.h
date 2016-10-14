@@ -14,7 +14,7 @@
  * along with TBox; 
  * If not, see <a href="http://www.gnu.org/licenses/"> http://www.gnu.org/licenses/</a>
  * 
- * Copyright (C) 2009 - 2015, ruki All rights reserved.
+ * Copyright (C) 2009 - 2017, ruki All rights reserved.
  *
  * @author      ruki
  * @file        ssl.h
@@ -73,7 +73,7 @@ typedef tb_long_t   (*tb_ssl_func_writ_t)(tb_cpointer_t priv, tb_byte_t const* d
 /*! the ssl wait func type 
  *
  * @param priv      the priv data for context
- * @param code      the aioe code
+ * @param code      the events code
  * @param timeout   the timeout
  *
  * @return          the real code, no event: 0, failed or closed: -1
@@ -144,7 +144,7 @@ tb_bool_t           tb_ssl_open(tb_ssl_ref_t ssl);
     while (!(ok = tb_ssl_open_try(handle)))
     {
         // wait it
-        ok = tb_ssl_wait(handle, TB_AIOE_CODE_RECV | TB_AIOE_CODE_SEND, timeout);
+        ok = tb_ssl_wait(handle, TB_SOCKET_EVENT_RECV | TB_SOCKET_EVENT_SEND, timeout);
         tb_check_break(ok > 0);
     }
 
@@ -173,7 +173,7 @@ tb_bool_t           tb_ssl_clos(tb_ssl_ref_t ssl);
     while (!(ok = tb_ssl_clos_try(handle)))
     {
         // wait it
-        ok = tb_ssl_wait(handle, TB_AIOE_CODE_RECV | TB_AIOE_CODE_SEND, timeout);
+        ok = tb_ssl_wait(handle, TB_SOCKET_EVENT_RECV | TB_SOCKET_EVENT_SEND, timeout);
         tb_check_break(ok > 0);
     }
 
@@ -208,7 +208,7 @@ tb_long_t           tb_ssl_writ(tb_ssl_ref_t ssl, tb_byte_t const* data, tb_size
 /*! wait ssl data
  *
  * @param ssl       the ssl handle
- * @param code      the aioe code
+ * @param code      the events code
  * @param timeout   the timeout
  *
  * @return          the real code, no event: 0, failed or closed: -1

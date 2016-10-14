@@ -14,7 +14,7 @@
  * along with TBox; 
  * If not, see <a href="http://www.gnu.org/licenses/"> http://www.gnu.org/licenses/</a>
  * 
- * Copyright (C) 2009 - 2015, ruki All rights reserved.
+ * Copyright (C) 2009 - 2017, ruki All rights reserved.
  *
  * @author      ruki
  * @file        compiler.h
@@ -158,10 +158,24 @@
 #           undef TB_COMPILER_VERSION_STRING
 #           define TB_COMPILER_VERSION_STRING       __clang_version__
 #       endif
-        // ignore warning: empty struct has size 0 in C, size 1 in C++
+        // suppress warning: empty struct has size 0 in C, size 1 in C++
 #       ifdef __cplusplus
 #           pragma clang diagnostic ignored         "-Wextern-c-compat"
 #       endif
+        /* suppress warning (must be placed in the front)
+         *
+         * in old version clang:
+         *
+         * unknown warning group '-Wnullability-completeness', ignored [-Werror,-Wunknown-pragmas]
+         */
+#       pragma clang diagnostic ignored             "-Wunknown-pragmas" 
+
+        /* suppress warning
+         *
+         * signal.h
+         * pointer is missing a nullability type specifier (_Nonnull, _Nullable, or _Null_unspecified)
+         */
+#       pragma clang diagnostic ignored             "-Wnullability-completeness" 
 #   endif
 
 // watcom c/c++ 

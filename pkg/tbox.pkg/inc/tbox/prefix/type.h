@@ -14,7 +14,7 @@
  * along with TBox; 
  * If not, see <a href="http://www.gnu.org/licenses/"> http://www.gnu.org/licenses/</a>
  * 
- * Copyright (C) 2009 - 2015, ruki All rights reserved.
+ * Copyright (C) 2009 - 2017, ruki All rights reserved.
  *
  * @author      ruki
  * @file        type.h
@@ -100,7 +100,7 @@ typedef __WCHAR_TYPE__              tb_wchar_t;
 #elif defined(__WCHAR_WIDTH__) && (__WCHAR_WIDTH__ == 2)
 typedef tb_int16_t                  tb_wchar_t;
 #elif defined(__WCHAR_WIDTH__) && (__WCHAR_WIDTH__ == 4)
-typedef tb_int16_t                  tb_wchar_t;
+typedef tb_int32_t                  tb_wchar_t;
 #else
 typedef tb_int32_t                  tb_wchar_t;
 #endif
