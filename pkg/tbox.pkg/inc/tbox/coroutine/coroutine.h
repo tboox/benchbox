@@ -27,8 +27,10 @@
 /* //////////////////////////////////////////////////////////////////////////////////////
  * includes
  */
-#include "scheduler.h"
+#include "lock.h"
 #include "channel.h"
+#include "semaphore.h"
+#include "scheduler.h"
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * extern
@@ -58,7 +60,7 @@ typedef tb_void_t       (*tb_coroutine_func_t)(tb_cpointer_t priv);
  *
  * @return              tb_true or tb_false
  */
-tb_bool_t               tb_coroutine_start(tb_scheduler_ref_t scheduler, tb_coroutine_func_t func, tb_cpointer_t priv, tb_size_t stacksize);
+tb_bool_t               tb_coroutine_start(tb_co_scheduler_ref_t scheduler, tb_coroutine_func_t func, tb_cpointer_t priv, tb_size_t stacksize);
 
 /*! yield the current coroutine
  * 
@@ -70,22 +72,26 @@ tb_bool_t               tb_coroutine_yield(tb_noarg_t);
  *
  * @param coroutine     the suspended coroutine
  * @param priv          the user private data as the return value of suspend() or sleep()
+ *
+ * @return              the user private data from suspend(priv)
  */
-tb_void_t               tb_coroutine_resume(tb_coroutine_ref_t coroutine, tb_cpointer_t priv);
+tb_pointer_t            tb_coroutine_resume(tb_coroutine_ref_t coroutine, tb_cpointer_t priv);
 
 /*! suspend the current coroutine
  *
+ * @param priv          the user private data as the return value of resume() 
+ *
  * @return              the user private data from resume(priv)
  */
-tb_cpointer_t           tb_coroutine_suspend(tb_noarg_t);
+tb_pointer_t            tb_coroutine_suspend(tb_cpointer_t priv);
 
 /*! sleep some times (ms)
  *
- * @param interval      the interval (ms)
+ * @param interval      the interval (ms), infinity: -1
  *
  * @return              the user private data from resume(priv)
  */
-tb_cpointer_t           tb_coroutine_sleep(tb_size_t interval);
+tb_pointer_t            tb_coroutine_sleep(tb_long_t interval);
 
 /*! wait io events 
  *

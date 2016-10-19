@@ -28,6 +28,7 @@
  * includes
  */
 #include "prefix.h"
+#include "../container/container.h"
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * extern
@@ -38,8 +39,8 @@ __tb_extern_c_enter__
  * types
  */
 
-/// the channel ref type
-typedef __tb_typeref__(channel);
+/// the coroutine channel ref type
+typedef __tb_typeref__(co_channel);
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * interfaces
@@ -47,15 +48,36 @@ typedef __tb_typeref__(channel);
 
 /*! init channel 
  *
+ * @param size          the buffer size, 0: no buffer
+ *
  * @return              the channel 
  */
-tb_channel_ref_t        tb_channel_init(tb_noarg_t);
+tb_co_channel_ref_t     tb_co_channel_init(tb_size_t size);
 
 /*! exit channel
  *
  * @param channel       the channel
  */
-tb_void_t               tb_channel_exit(tb_channel_ref_t channel);
+tb_void_t               tb_co_channel_exit(tb_co_channel_ref_t channel);
+
+/*! send data into channel
+ *
+ * the current coroutine will be suspend if this channel is full 
+ *
+ * @param channel       the channel
+ * @param data          the channel data
+ */
+tb_void_t               tb_co_channel_send(tb_co_channel_ref_t channel, tb_cpointer_t data);
+
+/*! recv data from channel
+ *
+ * the current coroutine will be suspend if no data
+ *
+ * @param channel       the channel
+ *
+ * @return              the channel data
+ */
+tb_pointer_t            tb_co_channel_recv(tb_co_channel_ref_t channel);
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * extern

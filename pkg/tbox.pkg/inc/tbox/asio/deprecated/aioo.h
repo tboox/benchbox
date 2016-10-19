@@ -17,12 +17,12 @@
  * Copyright (C) 2009 - 2017, ruki All rights reserved.
  *
  * @author      ruki
- * @file        semaphore.h
- * @ingroup     platform
+ * @file        aioo.h
+ * @ingroup     asio
  *
  */
-#ifndef TB_PLATFORM_SEMAPHORE_H
-#define TB_PLATFORM_SEMAPHORE_H
+#ifndef TB_ASIO_AIOO_H
+#define TB_ASIO_AIOO_H
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * includes
@@ -38,50 +38,31 @@ __tb_extern_c_enter__
  * interfaces
  */
 
-/*! init semaphore
+/*! the aioo handle
  *
- * @param value     the initial semaphore value
- * 
- * @return          the semaphore 
- */
-tb_semaphore_ref_t  tb_semaphore_init(tb_size_t value);
-
-/*! exit semaphore
- * 
- * @return          the semaphore 
- */
-tb_void_t           tb_semaphore_exit(tb_semaphore_ref_t semaphore);
-
-/*! post semaphore
- * 
- * @param semaphore the semaphore 
- * @param post      the post semaphore value
+ * @param aioo      the aioo
  *
- * @return          tb_true or tb_false
+ * @return          the socket
  */
-tb_bool_t           tb_semaphore_post(tb_semaphore_ref_t semaphore, tb_size_t post);
+tb_socket_ref_t     tb_aioo_sock(tb_aioo_ref_t aioo);
 
-/*! the semaphore value
- * 
- * @param semaphore the semaphore 
+/*! wait the aioo
  *
- * @return          >= 0: the semaphore value, -1: failed
+ * blocking wait the single event aioo, so need not aiop 
+ * return the event type if ok, otherwise return 0 for timeout
+ *
+ * @param sock      the sock 
+ * @param code      the aioe code
+ * @param timeout   the timeout, infinity: -1
+ *
+ * @return          > 0: the aioe code, 0: timeout, -1: failed
  */
-tb_long_t           tb_semaphore_value(tb_semaphore_ref_t semaphore);
+tb_long_t           tb_aioo_wait(tb_socket_ref_t sock, tb_size_t code, tb_long_t timeout);
 
-/*! wait semaphore
- * 
- * @param semaphore the semaphore 
- * @param timeout   the timeout
- *
- * @return          ok: 1, timeout: 0, fail: -1
- */
-tb_long_t           tb_semaphore_wait(tb_semaphore_ref_t semaphore, tb_long_t timeout);
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * extern
  */
 __tb_extern_c_leave__
 
-    
 #endif

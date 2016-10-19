@@ -17,17 +17,18 @@
  * Copyright (C) 2009 - 2017, ruki All rights reserved.
  *
  * @author      ruki
- * @file        scheduler.h
- * @ingroup     coroutine
+ * @file        dns.h
+ * @ingroup     asio
  *
  */
-#ifndef TB_COROUTINE_SCHEDULER_H
-#define TB_COROUTINE_SCHEDULER_H
+#ifndef TB_ASIO_DNS_H
+#define TB_ASIO_DNS_H
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * includes
  */
-#include "prefix.h"
+#include "aicp.h"
+#include "../../network/ipaddr.h"
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * extern
@@ -38,42 +39,55 @@ __tb_extern_c_enter__
  * types
  */
 
-/// the coroutine scheduler ref type
-typedef __tb_typeref__(co_scheduler);
+/// the aicp dns ref type
+typedef __tb_typeref__(aicp_dns);
+
+/// the aicp dns done func type
+typedef tb_void_t   (*tb_aicp_dns_done_func_t)(tb_aicp_dns_ref_t dns, tb_char_t const* host, tb_ipaddr_ref_t addr, tb_cpointer_t priv);
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * interfaces
  */
 
-/*! init scheduler 
+/*! init the dns 
  *
- * @return              the scheduler 
+ * @param aicp      the aicp
+ *
+ * @return          the dns 
  */
-tb_co_scheduler_ref_t   tb_co_scheduler_init(tb_noarg_t);
+tb_aicp_dns_ref_t   tb_aicp_dns_init(tb_aicp_ref_t aicp);
 
-/*! exit scheduler
+/*! kill the dns
  *
- * @param scheduler     the scheduler
+ * @param dns       the dns 
  */
-tb_void_t               tb_co_scheduler_exit(tb_co_scheduler_ref_t scheduler);
+tb_void_t           tb_aicp_dns_kill(tb_aicp_dns_ref_t dns);
 
-/* kill the scheduler 
+/*! exit the dns
  *
- * @param scheduler     the scheduler
+ * @param dns       the dns 
  */
-tb_void_t               tb_co_scheduler_kill(tb_co_scheduler_ref_t scheduler);
+tb_void_t           tb_aicp_dns_exit(tb_aicp_dns_ref_t dns);
 
-/*! run the scheduler loop
+/*! done the dns
  *
- * @param scheduler     the scheduler
+ * @param dns       the dns 
+ * @param host      the host
+ * @param timeout   the timeout, ms
+ * @param func      the done func
+ * @param priv      the func private data
+ *
+ * @return          tb_true or tb_false
  */
-tb_void_t               tb_co_scheduler_loop(tb_co_scheduler_ref_t scheduler);
+tb_bool_t           tb_aicp_dns_done(tb_aicp_dns_ref_t dns, tb_char_t const* host, tb_long_t timeout, tb_aicp_dns_done_func_t func, tb_cpointer_t priv);
 
-/*! get the scheduler of the current coroutine
+/*! the dns aicp
  *
- * @return              the scheduler
+ * @param handle    the dns handle
+ *
+ * @return          the aicp
  */
-tb_co_scheduler_ref_t   tb_co_scheduler_self(tb_noarg_t);
+tb_aicp_ref_t       tb_aicp_dns_aicp(tb_aicp_dns_ref_t dns);
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * extern

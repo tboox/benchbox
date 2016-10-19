@@ -18,17 +18,25 @@
  *
  * @author      ruki
  * @file        asio.h
+ * @defgroup    asio
  *
  */
-#ifndef TB_ASIO_H
-#define TB_ASIO_H
+#ifndef TB_ASIO_DEPRECATED_H
+#define TB_ASIO_DEPRECATED_H
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * includes
  */
 #include "prefix.h"
-#ifdef TB_CONFIG_API_HAVE_DEPRECATED
-#   include "deprecated/deprecated.h"
-#endif
+#include "aioo.h"
+#include "aioe.h"
+#include "aiop.h"
+#include "aico.h"
+#include "aice.h"
+#include "aicp.h"
+#include "http.h"
+#include "dns.h"
+#include "ssl.h"
+
 
 #endif

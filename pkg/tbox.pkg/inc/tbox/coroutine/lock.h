@@ -17,12 +17,12 @@
  * Copyright (C) 2009 - 2017, ruki All rights reserved.
  *
  * @author      ruki
- * @file        semaphore.h
- * @ingroup     platform
+ * @file        lock.h
+ * @ingroup     coroutine
  *
  */
-#ifndef TB_PLATFORM_SEMAPHORE_H
-#define TB_PLATFORM_SEMAPHORE_H
+#ifndef TB_COROUTINE_LOCK_H
+#define TB_COROUTINE_LOCK_H
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * includes
@@ -35,53 +35,51 @@
 __tb_extern_c_enter__
 
 /* //////////////////////////////////////////////////////////////////////////////////////
+ * types
+ */
+
+/// the coroutine lock ref type
+typedef __tb_typeref__(co_lock);
+
+/* //////////////////////////////////////////////////////////////////////////////////////
  * interfaces
  */
 
-/*! init semaphore
+/*! init lock 
  *
- * @param value     the initial semaphore value
- * 
- * @return          the semaphore 
+ * @return              the lock 
  */
-tb_semaphore_ref_t  tb_semaphore_init(tb_size_t value);
+tb_co_lock_ref_t        tb_co_lock_init(tb_noarg_t);
 
-/*! exit semaphore
- * 
- * @return          the semaphore 
- */
-tb_void_t           tb_semaphore_exit(tb_semaphore_ref_t semaphore);
-
-/*! post semaphore
- * 
- * @param semaphore the semaphore 
- * @param post      the post semaphore value
+/*! exit lock
  *
- * @return          tb_true or tb_false
+ * @param lock          the lock
  */
-tb_bool_t           tb_semaphore_post(tb_semaphore_ref_t semaphore, tb_size_t post);
+tb_void_t               tb_co_lock_exit(tb_co_lock_ref_t lock);
 
-/*! the semaphore value
- * 
- * @param semaphore the semaphore 
+/*! enter lock
  *
- * @return          >= 0: the semaphore value, -1: failed
+ * @param lock          the lock
  */
-tb_long_t           tb_semaphore_value(tb_semaphore_ref_t semaphore);
+tb_void_t               tb_co_lock_enter(tb_co_lock_ref_t lock);
 
-/*! wait semaphore
- * 
- * @param semaphore the semaphore 
- * @param timeout   the timeout
+/*! try to enter lock
  *
- * @return          ok: 1, timeout: 0, fail: -1
+ * @param lock          the lock
+ *
+ * @return              tb_true or tb_false
  */
-tb_long_t           tb_semaphore_wait(tb_semaphore_ref_t semaphore, tb_long_t timeout);
+tb_bool_t               tb_co_lock_enter_try(tb_co_lock_ref_t lock);
+
+/*! leave lock
+ *
+ * @param lock          the lock
+ */
+tb_void_t               tb_co_lock_leave(tb_co_lock_ref_t lock);
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * extern
  */
 __tb_extern_c_leave__
 
-    
 #endif

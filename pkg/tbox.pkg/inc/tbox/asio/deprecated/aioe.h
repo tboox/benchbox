@@ -17,12 +17,12 @@
  * Copyright (C) 2009 - 2017, ruki All rights reserved.
  *
  * @author      ruki
- * @file        semaphore.h
- * @ingroup     platform
+ * @file        aioe.h
+ * @ingroup     asio
  *
  */
-#ifndef TB_PLATFORM_SEMAPHORE_H
-#define TB_PLATFORM_SEMAPHORE_H
+#ifndef TB_ASIO_AIOE_H
+#define TB_ASIO_AIOE_H
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * includes
@@ -35,53 +35,40 @@
 __tb_extern_c_enter__
 
 /* //////////////////////////////////////////////////////////////////////////////////////
- * interfaces
+ * types
  */
 
-/*! init semaphore
- *
- * @param value     the initial semaphore value
- * 
- * @return          the semaphore 
- */
-tb_semaphore_ref_t  tb_semaphore_init(tb_size_t value);
+/// the aioe code enum, only for sock
+typedef enum __tb_aioe_code_e
+{
+    TB_AIOE_CODE_NONE       = 0x0000
+,   TB_AIOE_CODE_CONN       = 0x0001
+,   TB_AIOE_CODE_ACPT       = 0x0002
+,   TB_AIOE_CODE_RECV       = 0x0004
+,   TB_AIOE_CODE_SEND       = 0x0008
+,   TB_AIOE_CODE_EALL       = TB_AIOE_CODE_RECV | TB_AIOE_CODE_SEND | TB_AIOE_CODE_ACPT | TB_AIOE_CODE_CONN
+,   TB_AIOE_CODE_CLEAR      = 0x0010 //!< edge trigger. after the event is retrieved by the user, its state is reset
+,   TB_AIOE_CODE_ONESHOT    = 0x0020 //!< causes the event to return only the first occurrence of the filter being triggered
 
-/*! exit semaphore
- * 
- * @return          the semaphore 
- */
-tb_void_t           tb_semaphore_exit(tb_semaphore_ref_t semaphore);
+}tb_aioe_code_e;
 
-/*! post semaphore
- * 
- * @param semaphore the semaphore 
- * @param post      the post semaphore value
- *
- * @return          tb_true or tb_false
- */
-tb_bool_t           tb_semaphore_post(tb_semaphore_ref_t semaphore, tb_size_t post);
+/// the aioe type
+typedef struct __tb_aioe_t
+{
+    /// the code
+    tb_size_t                   code;
 
-/*! the semaphore value
- * 
- * @param semaphore the semaphore 
- *
- * @return          >= 0: the semaphore value, -1: failed
- */
-tb_long_t           tb_semaphore_value(tb_semaphore_ref_t semaphore);
+    /// the priv
+    tb_cpointer_t               priv;
 
-/*! wait semaphore
- * 
- * @param semaphore the semaphore 
- * @param timeout   the timeout
- *
- * @return          ok: 1, timeout: 0, fail: -1
- */
-tb_long_t           tb_semaphore_wait(tb_semaphore_ref_t semaphore, tb_long_t timeout);
+    /// the aioo
+    tb_aioo_ref_t               aioo;
+
+}tb_aioe_t, *tb_aioe_ref_t;
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * extern
  */
 __tb_extern_c_leave__
 
-    
 #endif

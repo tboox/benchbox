@@ -17,18 +17,18 @@
  * Copyright (C) 2009 - 2017, ruki All rights reserved.
  *
  * @author      ruki
- * @file        asio.h
+ * @file        deprecated.h
+ * @ingroup     stream
  *
  */
-#ifndef TB_ASIO_H
-#define TB_ASIO_H
+#ifndef TB_STREAM_DEPRECATED_H
+#define TB_STREAM_DEPRECATED_H
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * includes
  */
 #include "prefix.h"
-#ifdef TB_CONFIG_API_HAVE_DEPRECATED
-#   include "deprecated/deprecated.h"
-#endif
+#include "async_stream.h"
+#include "transfer_pool.h"
 
 #endif

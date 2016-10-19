@@ -25,26 +25,34 @@
  * includes
  */
 #include "tbox/tbox.h"
-#include "libfiber/libfiber.h"
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * macros
  */
 
-// the task stack size
-#define STACK       (32768)
-
-// the switch count
+// the channel count
 #define COUNT       (10000000)
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * implementaiton
  */
-static tb_void_t switchtask(ACL_FIBER* fiber, tb_pointer_t priv)
+static tb_void_t channeltask_send(tb_cpointer_t priv)
 {
+    // check
+    tb_co_channel_ref_t channel = (tb_co_channel_ref_t)priv;
+
     // loop
-    tb_size_t count = (tb_size_t)priv;
-    while (count--) acl_fiber_yield();
+    tb_size_t count = COUNT;
+    while (count--) tb_co_channel_send(channel, (tb_cpointer_t)count);
+}
+static tb_void_t channeltask_recv(tb_cpointer_t priv)
+{
+    // check
+    tb_co_channel_ref_t channel = (tb_co_channel_ref_t)priv;
+
+    // loop
+    tb_size_t count = COUNT;
+    while (count--) tb_co_channel_recv(channel);
 }
 
 /* //////////////////////////////////////////////////////////////////////////////////////
@@ -55,21 +63,36 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     // init tbox
     if (!tb_init(tb_null, tb_null)) return -1;
 
-    // create task
-    acl_fiber_create(switchtask, (tb_pointer_t)(COUNT >> 1), STACK);
-    acl_fiber_create(switchtask, (tb_pointer_t)(COUNT >> 1), STACK);
+    // init scheduler
+    tb_co_scheduler_ref_t scheduler = tb_co_scheduler_init();
+    if (scheduler)
+    {
+        // init channel
+        tb_co_channel_ref_t channel = tb_co_channel_init(0);
+        tb_assert(channel);
 
-    // init duration
-    tb_hong_t duration = tb_mclock();
-   
-    // scheduling
-    acl_fiber_schedule();
+        // start coroutine
+        tb_coroutine_start(scheduler, channeltask_send, channel, 0);
+        tb_coroutine_start(scheduler, channeltask_recv, channel, 0);
 
-    // computing time
-    duration = tb_mclock() - duration;
+        // init the start time
+        tb_hong_t startime = tb_mclock();
 
-    // trace
-    tb_trace_i("switch: libfiber(acl): %d switches in %lld ms, %lld switches per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
+        // run scheduler
+        tb_co_scheduler_loop(scheduler);
+
+        // computing time
+        tb_hong_t duration = tb_mclock() - startime;
+
+        // exit channel 
+        tb_co_channel_exit(channel);
+
+        // trace
+        tb_trace_i("channel: tbox: %d passes in %lld ms, %lld passes per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
+
+        // exit scheduler
+        tb_co_scheduler_exit(scheduler);
+    }
 
     // exit tbox
     tb_exit();
