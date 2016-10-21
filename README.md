@@ -19,7 +19,14 @@ Please install xmake first: [xmake](http://xmake.io)
 ```bash
     $ xmake coroutine -n switch
 or  $ xmake coroutine --casename switch
+
+    $ xmake coroutine -n channel
+or  $ xmake coroutine --casename channel
 ```
+
+## Reports
+
+If you want to look the testing results, please refer to [reports](https://github.com/waruqi/benchbox/wiki/reports).
 
 ## List tests
 
@@ -54,6 +61,7 @@ Options:
 
     -n CASENAME, --casename=CASENAME       The case name.
                                                - switch
+                                               - channel
 ```
 
 #### Contacts
@@ -83,7 +91,14 @@ Benchbox是一个基准测试包，里面包含许多针对第三方库功能的
 ```bash
     $ xmake coroutine -n switch
 or  $ xmake coroutine --casename switch
+
+    $ xmake coroutine -n channel
+or  $ xmake coroutine --casename channel
 ```
+
+## 测试报告
+
+如果想要查看以后的测试结果，请参考：[reports](https://github.com/waruqi/benchbox/wiki/reports).
 
 ## 显示所有测试用例
 
@@ -118,6 +133,7 @@ Options:
 
     -n CASENAME, --casename=CASENAME       The case name.
                                                - switch
+                                               - channel
 ```
 
 #### 联系方式
