@@ -98,7 +98,7 @@ or  $ xmake coroutine --casename channel
 
 ## 测试报告
 
-如果想要查看以后的测试结果，请参考：[reports](https://github.com/waruqi/benchbox/wiki/reports).
+如果想要查看已有的测试结果，请参考：[测试报告](https://github.com/waruqi/benchbox/wiki/reports).
 
 ## 显示所有测试用例
 
