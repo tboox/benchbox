@@ -67,7 +67,7 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
         tb_hong_t startime = tb_mclock();
 
         // run scheduler
-        tb_co_scheduler_loop(scheduler);
+        tb_co_scheduler_loop(scheduler, tb_true);
 
         // computing time
         tb_hong_t duration = tb_mclock() - startime;
