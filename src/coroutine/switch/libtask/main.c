@@ -44,6 +44,9 @@
 // the start time
 static tb_hong_t g_startime = 0;
 
+// the coroutine count
+static tb_size_t g_cocount = 0;
+
 /* //////////////////////////////////////////////////////////////////////////////////////
  * implementaiton
  */
@@ -57,7 +60,7 @@ static tb_void_t switchtask(tb_pointer_t priv)
     tb_hong_t duration = tb_mclock() - g_startime;
 
     // trace
-    tb_trace_i("switch: libtask: %d switches in %lld ms, %lld switches per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
+    tb_trace_i("switch[%lu]: libtask: %d switches in %lld ms, %lld switches per second", g_cocount, COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
 
     // exit all tasks
     taskexitall(0);
@@ -74,10 +77,15 @@ tb_void_t taskmain(tb_int_t argc, tb_char_t** argv)
     // init tbox
     if (!tb_init(tb_null, tb_null)) return ;
 
-    // init start time
-    g_startime = tb_mclock();
+    // get coroutine count
+    g_cocount = argv[1]? tb_atoi(argv[1]) : 2;
+    tb_assert_and_check_return(g_cocount > 1);
 
     // create task
-    taskcreate(switchtask, (tb_pointer_t)(COUNT >> 1), STACK);
-    taskcreate(switchtask, (tb_pointer_t)(COUNT >> 1), STACK);
+    tb_size_t i = 0;
+    for (i = 0; i < g_cocount; i++)
+        taskcreate(switchtask, (tb_pointer_t)(COUNT / g_cocount), STACK);
+
+    // init start time
+    g_startime = tb_mclock();
 }

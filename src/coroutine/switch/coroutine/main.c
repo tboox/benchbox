@@ -52,33 +52,46 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     // init tbox
     if (!tb_init(tb_null, tb_null)) return -1;
 
+    // get coroutine count
+    tb_size_t cocount = argv[1]? tb_atoi(argv[1]) : 2;
+    tb_assert_and_check_return_val(cocount > 1, -1);
+
+    // init coroutines
+    tb_int_t* coroutines = tb_nalloc0_type(cocount, tb_int_t);
+
     // init schedule
     struct schedule* scheduler = coroutine_open();
-    if (scheduler)
+    if (scheduler && coroutines)
     {
-        // init coroutine
-        tb_int_t co1 = coroutine_new(scheduler, switchtask, (tb_pointer_t)(COUNT >> 1));
-        tb_int_t co2 = coroutine_new(scheduler, switchtask, (tb_pointer_t)(COUNT >> 1));
+        // init coroutines
+        tb_size_t i = 0;
+        for (i = 0; i < cocount; i++)
+            coroutines[i] = coroutine_new(scheduler, switchtask, (tb_pointer_t)(COUNT / cocount));
 
         // init duration
         tb_hong_t duration = tb_mclock();
 
         // run scheduler
-        while (coroutine_status(scheduler, co1) && coroutine_status(scheduler, co2))
+        tb_size_t count = COUNT / cocount;
+        while (count--)
         {
-            coroutine_resume(scheduler, co1);
-            coroutine_resume(scheduler, co2);
+            for (i = 0; i < cocount; i++)
+                coroutine_resume(scheduler, coroutines[i]);
         }
 
         // computing time
         duration = tb_mclock() - duration;
 
         // trace
-        tb_trace_i("switch: coroutine(cloudwu): %d switches in %lld ms, %lld switches per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
+        tb_trace_i("switch[%lu]: coroutine(cloudwu): %d switches in %lld ms, %lld switches per second", cocount, COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
 
         // exit scheduler
         coroutine_close(scheduler);
     }
+
+    // exit coroutines
+    if (coroutines) tb_free(coroutines);
+    coroutines = tb_null;
 
     // exit tbox
     tb_exit();

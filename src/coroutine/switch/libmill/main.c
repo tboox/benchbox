@@ -54,21 +54,26 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     // init tbox
     if (!tb_init(tb_null, tb_null)) return -1;
 
+    // get coroutine count
+    tb_size_t cocount = argv[1]? tb_atoi(argv[1]) : 2;
+    tb_assert_and_check_return_val(cocount > 1, -1);
+
     // init duration
     tb_hong_t duration = tb_mclock();
 
     // create task
-    tb_size_t count = COUNT;
-    go(switchtask(count >> 1));
+    tb_size_t i = 0;
+    for (i = 0; i < cocount - 1; i++)
+        go(switchtask(COUNT / cocount));
 
     // scheduling
-    switchtask(count >> 1);
+    switchtask(COUNT / cocount);
 
     // computing time
     duration = tb_mclock() - duration;
 
     // trace
-    tb_trace_i("switch: libmill: %d switches in %lld ms, %lld switches per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
+    tb_trace_i("switch[%lu]: libmill: %d switches in %lld ms, %lld switches per second", cocount, COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
 
     // exit tbox
     tb_exit();

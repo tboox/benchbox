@@ -40,8 +40,8 @@
 static tb_pointer_t switchtask(tb_pointer_t priv)
 {
     // loop
-    tb_size_t* pcount = (tb_size_t*)priv;
-    while ((*pcount)--) co_yield_ct();
+    tb_size_t count = (tb_size_t)priv;
+    while (count--) co_yield_ct();
     return 0;
 }
 
@@ -53,33 +53,40 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     // init tbox
     if (!tb_init(tb_null, tb_null)) return -1;
 
+    // get coroutine count
+    tb_size_t cocount = argv[1]? tb_atoi(argv[1]) : 2;
+    tb_assert_and_check_return_val(cocount > 1, -1);
+
+    // init coroutines
+    stCoRoutine_t* coroutines = tb_nalloc0_type(cocount, stCoRoutine_t*);
+    tb_assert_and_check_return_val(coroutines, -1);
+
     // create coroutine
-    stCoRoutine_t*  co1 = tb_null;
-    stCoRoutine_t*  co2 = tb_null;
-    tb_size_t       count1 = COUNT >> 1;
-    tb_size_t       count2 = COUNT >> 1;
-    co_create(&co1, tb_null, switchtask, &count1);
-    co_create(&co2, tb_null, switchtask, &count2);
+    tb_size_t i = 0;
+    for (i = 0; i < cocount; i++)
+        co_create(coroutines + i, tb_null, switchtask, (tb_pointer_t)(COUNT / cocount));
 
     // init duration
     tb_hong_t duration = tb_mclock();
 
     // scheduling
-    while (count1 && count2)
+    tb_size_t count = COUNT / cocount;
+    while (count--)
     {
-        co_resume(co1);
-        co_resume(co2);
+        for (i = 0; i < cocount; i++)
+            co_resume(coroutines[i]);
     }
 
     // computing time
     duration = tb_mclock() - duration;
 
     // trace
-    tb_trace_i("switch: libco: %d switches in %lld ms, %lld switches per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
+    tb_trace_i("switch[%lu]: libco: %d switches in %lld ms, %lld switches per second", cocount, COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
 
-    // exit coroutine
-    co_release(co1);
-    co_release(co2);
+    // exit coroutines
+    for (i = 0; i < cocount; i++)
+        co_release(coroutines[i]);
+    tb_free(coroutines);
 
     // exit tbox
     tb_exit();

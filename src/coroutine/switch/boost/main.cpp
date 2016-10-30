@@ -35,12 +35,20 @@
 #define COUNT       (10000000)
 
 /* //////////////////////////////////////////////////////////////////////////////////////
+ * types
+ */
+
+// the coroutine type
+typedef boost::coroutines::symmetric_coroutine<tb_size_t>::call_type coroutine_t;
+
+/* //////////////////////////////////////////////////////////////////////////////////////
  * implementaiton
  */
 static tb_void_t switchtask(boost::coroutines::symmetric_coroutine<tb_size_t>::yield_type& yield)
 {
     tb_size_t count = yield.get();
-    while (count--) yield(); 
+    while (count--) 
+        yield(); 
 }
 
 /* //////////////////////////////////////////////////////////////////////////////////////
@@ -51,25 +59,39 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     // init tbox
     if (!tb_init(tb_null, tb_null)) return -1;
 
+    // get coroutine count
+    tb_size_t cocount = argv[1]? tb_atoi(argv[1]) : 2;
+    tb_assert_and_check_return_val(cocount > 1, -1);
+
+    // make coroutines
+    coroutine_t* coroutines = tb_nalloc0_type(cocount, coroutine_t);
+    tb_assert_and_check_return_val(coroutines, -1);
+
+    // init coroutines
+    tb_size_t i = 0;
+    for (i = 0; i < cocount; i++)
+        new (coroutines + i) coroutine_t (switchtask);
+
     // init duration
     tb_hong_t duration = tb_mclock();
 
-    // init task
-    boost::coroutines::symmetric_coroutine<tb_size_t>::call_type co1(switchtask);
-    boost::coroutines::symmetric_coroutine<tb_size_t>::call_type co2(switchtask);
-
     // scheduling
-    while (co1 && co2)
-    {
-        co1(COUNT >> 1);
-        co2(COUNT >> 1); 
-    }
+    tb_size_t j = 0;
+    tb_size_t n = COUNT / cocount;
+    for (i = 0; i < n; i++)
+        for (j = 0; j < cocount; j++)
+            coroutines[j](n);
 
     // computing time
     duration = tb_mclock() - duration;
 
     // trace
-    tb_trace_i("switch: boost: %d switches in %lld ms, %lld switches per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
+    tb_trace_i("switch[%lu]: boost: %d switches in %lld ms, %lld switches per second", cocount, COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
+
+    // exit coroutines
+    for (i = 0; i < cocount; i++)
+        (coroutines + i)->~coroutine_t();
+    tb_free(coroutines);
 
     // exit tbox
     tb_exit();

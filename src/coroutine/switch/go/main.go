@@ -3,7 +3,9 @@
  */
 package main
 import (
+    "os"
     "fmt"
+    "strconv"
     "runtime"
     "time"
     )
@@ -38,18 +40,33 @@ func main(){
     // single cpu
     runtime.GOMAXPROCS(1)
 
+    // get coroutine count
+    cocount := 2
+    if len(os.Args) > 1 {
+        cocount, _ = strconv.Atoi(os.Args[1])
+    }
+
     // init duration
     var duration = time.Now().UnixNano()
 
     // create coroutine task
-    go switchtask(COUNT >> 1)
+    var i = 0
+    for {
+
+        i++
+        if i > cocount - 1 {
+           break
+        }
+
+        go switchtask(COUNT / cocount)
+    }
 
     // in main goroutine
-    switchtask(COUNT >> 1)
+    switchtask(COUNT / cocount)
 
     // computing time
     duration = (time.Now().UnixNano() - duration) / 1000000
 
     // trace
-    fmt.Printf("switch: go: %d switches in %d ms, %d switches per second\n", COUNT, duration, (1000 * COUNT) / duration)
+    fmt.Printf("switch[%d]: go: %d switches in %d ms, %d switches per second\n", cocount, COUNT, duration, (1000 * COUNT) / duration)
 }

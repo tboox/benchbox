@@ -37,10 +37,20 @@
 /* //////////////////////////////////////////////////////////////////////////////////////
  * implementaiton
  */
-static tb_void_t switchtask(tb_size_t count)
+static tb_void_t switchtask(tb_size_t cocount)
 {
     // loop
-    while (count--) co_yield;
+    tb_size_t i = 0;
+    for (i = 0; i < cocount; i++)
+    {
+        go [=]
+        {
+            tb_size_t j = 0;
+            tb_size_t n = COUNT / cocount;
+            for (j = 0; j < n; j++)
+                co_yield;
+        };
+    }
 }
 
 /* //////////////////////////////////////////////////////////////////////////////////////
@@ -51,19 +61,22 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     // init tbox
     if (!tb_init(tb_null, tb_null)) return -1;
 
+    // get coroutine count
+    tb_size_t cocount = argv[1]? tb_atoi(argv[1]) : 2;
+    tb_assert_and_check_return_val(cocount > 1, -1);
+
     // init duration
     tb_hong_t duration = tb_mclock();
    
     // scheduling
-    go []{ switchtask(COUNT >> 1); };
-    go []{ switchtask(COUNT >> 1); };
+    go []{ switchtask(cocount); };
     co_sched.RunUntilNoTask();
 
     // computing time
     duration = tb_mclock() - duration;
 
     // trace
-    tb_trace_i("switch: libgo(boost): %d switches in %lld ms, %lld switches per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
+    tb_trace_i("switch[%lu]: libgo(boost): %d switches in %lld ms, %lld switches per second", cocount, COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
 
     // exit tbox
     tb_exit();
