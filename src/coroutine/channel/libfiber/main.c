@@ -82,7 +82,7 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     duration = tb_mclock() - duration;
 
     // trace
-    tb_trace_i("channel[%lu]: libfiber: %d passes in %lld ms, %lld passes per second", size, COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
+    tb_trace_i("channel[%lu]: libfiber(acl): %d passes in %lld ms, %lld passes per second", size, COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
 
     // exit channel
     acl_channel_free(channel);
