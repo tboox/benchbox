@@ -3,7 +3,9 @@
  */
 package main
 import (
+    "os"
     "fmt"
+    "strconv"
     "runtime"
     "time"
     )
@@ -32,8 +34,14 @@ func main(){
     // single cpu
     runtime.GOMAXPROCS(1)
 
+    // get channel size
+    size := 0
+    if len(os.Args) > 1 {
+        size, _ = strconv.Atoi(os.Args[1])
+    }
+
     // make channel
-    channel := make(chan int, 0)
+    channel := make(chan int, size)
 
     // init duration
     duration := time.Now().UnixNano()
@@ -56,5 +64,5 @@ func main(){
     duration = (time.Now().UnixNano() - duration) / 1000000
 
     // trace
-    fmt.Printf("channel: go: %d passes in %d ms, %d passes per second\n", COUNT, duration, (1000 * COUNT) / duration)
+    fmt.Printf("channel[%d]: go: %d passes in %d ms, %d passes per second\n", size, COUNT, duration, (1000 * COUNT) / duration)
 }

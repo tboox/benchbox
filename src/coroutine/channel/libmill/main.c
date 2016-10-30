@@ -56,8 +56,11 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     // init tbox
     if (!tb_init(tb_null, tb_null)) return -1;
 
+    // get channel buffer size
+    tb_size_t size = argv[1]? tb_atoi(argv[1]) : 0;
+
     // make input and output passes
-    chan channel = chmake(tb_size_t, 0);
+    chan channel = chmake(tb_size_t, size);
 
     // init duration
     tb_hong_t duration = tb_mclock();
@@ -73,7 +76,7 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     duration = tb_mclock() - duration;
 
     // trace
-    tb_trace_i("channel: libmill: %d passes in %lld ms, %lld passes per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
+    tb_trace_i("channel[%lu]: libmill: %d passes in %lld ms, %lld passes per second", size, COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
 
     // exit tbox
     tb_exit();

@@ -44,6 +44,9 @@
 // the start time
 static tb_hong_t g_startime = 0;
 
+// the channel buffer size
+static tb_size_t g_channel_size = 0;
+
 /* //////////////////////////////////////////////////////////////////////////////////////
  * implementaiton
  */
@@ -64,7 +67,7 @@ static tb_void_t channeltask_send(tb_pointer_t priv)
     tb_hong_t duration = tb_mclock() - g_startime;
 
     // trace
-    tb_trace_i("channel: libtask: %d passes in %lld ms, %lld passes per second", COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
+    tb_trace_i("channel[%lu]: libtask: %d passes in %lld ms, %lld passes per second", g_channel_size, COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
 
     // exit all tasks
     taskexitall(0);
@@ -81,8 +84,11 @@ tb_void_t taskmain(tb_int_t argc, tb_char_t** argv)
     // init tbox
     if (!tb_init(tb_null, tb_null)) return ;
 
+    // get channel buffer size
+    g_channel_size = argv[1]? tb_atoi(argv[1]) : 0;
+
     // init channel
-    Channel* channel = chancreate(sizeof(tb_size_t), 0);
+    Channel* channel = chancreate(sizeof(tb_size_t), g_channel_size);
 
     // init start time
     g_startime = tb_mclock();
