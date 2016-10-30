@@ -58,7 +58,7 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     tb_assert_and_check_return_val(cocount > 1, -1);
 
     // init coroutines
-    stCoRoutine_t* coroutines = tb_nalloc0_type(cocount, stCoRoutine_t*);
+    stCoRoutine_t** coroutines = tb_nalloc0_type(cocount, stCoRoutine_t*);
     tb_assert_and_check_return_val(coroutines, -1);
 
     // create coroutine
