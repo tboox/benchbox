@@ -14,7 +14,11 @@ option("boost")
     add_defines_h_if_ok("$(prefix)_PACKAGE_HAVE_BOOST")
 
     -- add links
-    add_links("boost_coroutine", "boost_context", "boost_system")
+    if is_plat("macosx") then
+        add_links("boost_coroutine", "boost_context-mt", "boost_system")
+    else
+        add_links("boost_coroutine", "boost_context", "boost_system")
+    end
 
     -- add c++ includes for checking
     add_cxxincludes("boost/coroutine/coroutine.hpp")

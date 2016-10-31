@@ -14,16 +14,17 @@ option("libfiber")
     add_defines_h_if_ok("$(prefix)_PACKAGE_HAVE_LIBFIBER")
 
     -- add links for checking
-    --add_links("_fiber", "_acl")
-    add_ldflags("lib_fiber.a", "lib_acl.a")
+    add_links("fiber", "acl")
 
     -- add link directories
     add_linkdirs("lib/$(plat)/$(arch)")
+
+    -- add c function for checking
+    add_cfuncs("acl_fiber_create(0, 0, 0);")
 
     -- add c includes for checking
     add_cincludes("acl/lib_fiber.h")
 
     -- add include directories
     add_includedirs("inc/$(plat)", "inc", "/usr/local/lib/linux64")
-
 
