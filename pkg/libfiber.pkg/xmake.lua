@@ -17,14 +17,11 @@ option("libfiber")
     add_links("fiber", "acl")
 
     -- add link directories
-    add_linkdirs("lib/$(plat)/$(arch)")
-
-    -- add c function for checking
-    add_cfuncs("acl_fiber_create(0, 0, 0);")
+    add_linkdirs("lib/$(plat)/$(arch)", "/usr/local/lib/linux64")
 
     -- add c includes for checking
     add_cincludes("acl/lib_fiber.h")
 
     -- add include directories
-    add_includedirs("inc/$(plat)", "inc", "/usr/local/lib/linux64")
+    add_includedirs("inc/$(plat)", "inc")
 
