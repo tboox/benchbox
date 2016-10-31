@@ -20,7 +20,7 @@ option("libtask")
     add_linkdirs("lib/$(plat)/$(arch)")
 
     -- add c includes for checking
-    add_cincludes("task/task.h")
+    add_cincludes("task.h")
 
     -- add include directories
     add_includedirs("inc/$(plat)", "inc")

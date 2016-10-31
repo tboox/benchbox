@@ -25,7 +25,7 @@
  * includes
  */
 #include "tbox/tbox.h"
-#include "libco/libco.h"
+#include "co_routine.h"
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * macros

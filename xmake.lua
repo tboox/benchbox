@@ -11,14 +11,14 @@ set_warnings("all")
 set_languages("c99", "cxx11")
 
 -- set the symbols visibility: hidden
-set_symbols("hidden")
+set_symbols("debug")
 
 -- strip all symbols
 set_strip("all")
 
 -- fomit the frame pointer
-add_cxflags("-fomit-frame-pointer")
-add_mxflags("-fomit-frame-pointer")
+--add_cxflags("-fomit-frame-pointer")
+--add_mxflags("-fomit-frame-pointer")
 
 -- enable fastest optimization
 set_optimize("fastest")

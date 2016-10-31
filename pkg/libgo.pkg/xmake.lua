@@ -14,7 +14,7 @@ option("libgo")
     add_defines_h_if_ok("$(prefix)_PACKAGE_HAVE_LIBGO")
 
     -- add links for checking
-    add_links("go", "boost_context")
+    add_links("libgo", "boost_context", "boost_coroutine", "boost_system")
 
     -- set languages
     set_languages("cxx11")

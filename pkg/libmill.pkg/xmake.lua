@@ -20,7 +20,7 @@ option("libmill")
     add_linkdirs("lib/$(plat)/$(arch)")
 
     -- add c includes for checking
-    add_cincludes("libmill/libmill.h")
+    add_cincludes("libmill.h")
 
     -- add include directories
     add_includedirs("inc/$(plat)", "inc")

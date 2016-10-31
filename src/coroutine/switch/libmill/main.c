@@ -28,7 +28,7 @@
 #ifndef asm
 #   define asm __tb_asm__
 #endif
-#include "libmill/libmill.h"
+#include "libmill.h"
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * macros
