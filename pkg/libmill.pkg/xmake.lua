@@ -11,7 +11,7 @@ option("libmill")
     set_description("The libmill package")
 
     -- add defines to config.h if checking ok
-    add_defines_h_if_ok("$(prefix)_PACKAGE_HAVE_LIBMILL")
+    add_defines_h("$(prefix)_PACKAGE_HAVE_LIBMILL")
 
     -- add links for checking
     add_links("mill")

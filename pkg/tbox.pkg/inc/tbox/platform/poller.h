@@ -1,20 +1,22 @@
 /*!The Treasure Box Library
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  * 
- * TBox is free software; you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
- * (at your option) any later version.
- * 
- * TBox is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with TBox; 
- * If not, see <a href="http://www.gnu.org/licenses/"> http://www.gnu.org/licenses/</a>
- * 
- * Copyright (C) 2009 - 2017, ruki All rights reserved.
+ * Copyright (C) 2009 - 2018, TBOOX Open Source Group.
  *
  * @author      ruki
  * @file        poller.h
@@ -38,19 +40,41 @@ __tb_extern_c_enter__
  * types
  */
 
+/// the poller type enum
+typedef enum __tb_poller_type_e
+{
+    TB_POLLER_TYPE_NONE         = 0
+,   TB_POLLER_TYPE_IOCP         = 1
+,   TB_POLLER_TYPE_POLL         = 2
+,   TB_POLLER_TYPE_EPOLL        = 3
+,   TB_POLLER_TYPE_KQUEUE       = 4
+,   TB_POLLER_TYPE_SELECT       = 5
+
+}tb_poller_type_e;
+
 /// the poller event enum, only for sock
 typedef enum __tb_poller_event_e
 {
+    // the waited events
     TB_POLLER_EVENT_NONE        = TB_SOCKET_EVENT_NONE
 ,   TB_POLLER_EVENT_CONN        = TB_SOCKET_EVENT_CONN
 ,   TB_POLLER_EVENT_ACPT        = TB_SOCKET_EVENT_ACPT
 ,   TB_POLLER_EVENT_RECV        = TB_SOCKET_EVENT_RECV
 ,   TB_POLLER_EVENT_SEND        = TB_SOCKET_EVENT_SEND
+,   TB_POLLER_EVENT_EALL        = TB_SOCKET_EVENT_EALL
 
+    // the event flags after waiting
 ,   TB_POLLER_EVENT_CLEAR       = 0x0010 //!< edge trigger. after the event is retrieved by the user, its state is reset
 ,   TB_POLLER_EVENT_ONESHOT     = 0x0020 //!< causes the event to return only the first occurrence of the filter being triggered
 
-,   TB_POLLER_EVENT_EALL        = TB_SOCKET_EVENT_EALL
+    /*! the event flag will be marked if the connection be closed in the edge trigger (TB_POLLER_EVENT_CLEAR)
+     *
+     * be similar to epoll.EPOLLRDHUP and kqueue.EV_EOF
+     */
+,   TB_POLLER_EVENT_EOF         = 0x0100
+
+    /// socket error after waiting
+,   TB_POLLER_EVENT_ERROR       = 0x0200
 
 }tb_poller_event_e;
 
@@ -84,11 +108,13 @@ tb_poller_ref_t     tb_poller_init(tb_cpointer_t priv);
  */
 tb_void_t           tb_poller_exit(tb_poller_ref_t poller);
 
-/*! clear all sockets
+/*! get the poller type
  *
  * @param poller    the poller
+ *
+ * @return          the poller type
  */
-tb_void_t           tb_poller_clear(tb_poller_ref_t poller);
+tb_size_t           tb_poller_type(tb_poller_ref_t poller);
 
 /*! get the user private data
  *

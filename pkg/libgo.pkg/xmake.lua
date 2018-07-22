@@ -11,7 +11,7 @@ option("libgo")
     set_description("The libgo package")
 
     -- add defines to config.h if checking ok
-    add_defines_h_if_ok("$(prefix)_PACKAGE_HAVE_LIBGO")
+    add_defines_h("$(prefix)_PACKAGE_HAVE_LIBGO")
 
     -- add links for checking
     add_links("libgo", "boost_context", "boost_coroutine", "boost_system")

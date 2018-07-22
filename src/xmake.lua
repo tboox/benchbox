@@ -20,9 +20,6 @@ for _, taskname in ipairs(os.dirs("*"), path.basename) do
             -- load config
             config.load()
 
-            -- load project
-            project.load()
-
             -- walk all tests
             for _, testname in ipairs(os.dirs(format("%s/%s/%s/*", os.scriptdir(), taskname, casename)), path.basename) do
 

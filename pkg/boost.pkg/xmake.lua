@@ -11,7 +11,7 @@ option("boost")
     set_description("The boost package")
 
     -- add defines to config.h if checking ok
-    add_defines_h_if_ok("$(prefix)_PACKAGE_HAVE_BOOST")
+    add_defines_h("$(prefix)_PACKAGE_HAVE_BOOST")
 
     -- add links
     if is_plat("macosx") then

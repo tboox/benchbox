@@ -1,20 +1,22 @@
 /*!The Treasure Box Library
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  * 
- * TBox is free software; you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
- * (at your option) any later version.
- * 
- * TBox is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with TBox; 
- * If not, see <a href="http://www.gnu.org/licenses/"> http://www.gnu.org/licenses/</a>
- * 
- * Copyright (C) 2009 - 2017, ruki All rights reserved.
+ * Copyright (C) 2009 - 2018, TBOOX Open Source Group.
  *
  * @author      ruki
  * @file        state.h
@@ -51,9 +53,9 @@ typedef enum __tb_state_type_e
 {
     TB_STATE_TYPE_NONE      = 0
 ,   TB_STATE_TYPE_SOCK      = 1
-,   TB_STATE_TYPE_FILE      = 2
-,   TB_STATE_TYPE_HTTP      = 3
-,   TB_STATE_TYPE_DATABASE  = 4
+,   TB_STATE_TYPE_HTTP      = 2
+,   TB_STATE_TYPE_DATABASE  = 3
+,   TB_STATE_TYPE_SYSERROR  = 4
 
 }tb_state_type_e;
 
@@ -84,10 +86,6 @@ typedef enum __tb_state_e
 ,   TB_STATE_POST_FAILED                = TB_STATE_DEFINE(TB_STATE_TYPE_NONE, 21)
 ,   TB_STATE_NOT_SUPPORTED              = TB_STATE_DEFINE(TB_STATE_TYPE_NONE, 22)
 ,   TB_STATE_UNKNOWN_ERROR              = TB_STATE_DEFINE(TB_STATE_TYPE_NONE, 23)
-
-,   TB_STATE_FILE_NOT_EXISTS            = TB_STATE_DEFINE(TB_STATE_TYPE_FILE, 1)
-,   TB_STATE_FILE_OPEN_FAILED           = TB_STATE_DEFINE(TB_STATE_TYPE_FILE, 2)
-,   TB_STATE_FILE_UNKNOWN_ERROR         = TB_STATE_DEFINE(TB_STATE_TYPE_FILE, 3)
 
 ,   TB_STATE_SOCK_DNS_FAILED            = TB_STATE_DEFINE(TB_STATE_TYPE_SOCK, 1)
 ,   TB_STATE_SOCK_CONNECT_FAILED        = TB_STATE_DEFINE(TB_STATE_TYPE_SOCK, 2)
@@ -163,6 +161,10 @@ typedef enum __tb_state_e
 ,   TB_STATE_DATABASE_VALUE_COUNT_ERROR = TB_STATE_DEFINE(TB_STATE_TYPE_DATABASE, 6)
 ,   TB_STATE_DATABASE_UNKNOWN_HOST      = TB_STATE_DEFINE(TB_STATE_TYPE_DATABASE, 7)
 ,   TB_STATE_DATABASE_UNKNOWN_ERROR     = TB_STATE_DEFINE(TB_STATE_TYPE_DATABASE, 8)
+
+,   TB_STATE_SYSERROR_NOT_PERM          = TB_STATE_DEFINE(TB_STATE_TYPE_SYSERROR, 1)
+,   TB_STATE_SYSERROR_NOT_FILEDIR       = TB_STATE_DEFINE(TB_STATE_TYPE_SYSERROR, 2)
+,   TB_STATE_SYSERROR_UNKNOWN_ERROR     = TB_STATE_DEFINE(TB_STATE_TYPE_SYSERROR, 3)
 
 }tb_state_e;
 

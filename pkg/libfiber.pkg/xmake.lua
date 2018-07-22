@@ -11,7 +11,7 @@ option("libfiber")
     set_description("The libfiber package")
 
     -- add defines to config.h if checking ok
-    add_defines_h_if_ok("$(prefix)_PACKAGE_HAVE_LIBFIBER")
+    add_defines_h("$(prefix)_PACKAGE_HAVE_LIBFIBER")
 
     -- add links for checking
     add_links("fiber", "acl")
