@@ -28,6 +28,7 @@
  */
 #include "tbox/tbox.h"
 #include "libgo/libgo.h"
+#include <atomic>
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * macros
@@ -39,6 +40,8 @@
 /* //////////////////////////////////////////////////////////////////////////////////////
  * implementaiton
  */
+std::atomic<int> gDone{0};
+
 static tb_void_t channeltask_recv(co_chan<tb_size_t>& channel)
 {
     // loop
@@ -48,12 +51,18 @@ static tb_void_t channeltask_recv(co_chan<tb_size_t>& channel)
         channel >> value;
         if (!value) break;
     }
+    if (++gDone == 2) {
+        co_sched.Stop();
+    }
 }
 static tb_void_t channeltask_send(co_chan<tb_size_t>& channel)
 {
     // loop
     tb_size_t count = COUNT;
     while (count--) channel << count;
+    if (++gDone == 2) {
+        co_sched.Stop();
+    }
 }
 
 /* //////////////////////////////////////////////////////////////////////////////////////
@@ -76,7 +85,7 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     // scheduling
     go [&]{ channeltask_recv(channel); };
     go [&]{ channeltask_send(channel); };
-    co_sched.RunUntilNoTask();
+    co_sched.Start();
 
     // computing time
     duration = tb_mclock() - duration;

@@ -28,6 +28,7 @@
  */
 #include "tbox/tbox.h"
 #include "libgo/libgo.h"
+#include <atomic>
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * macros
@@ -39,6 +40,8 @@
 /* //////////////////////////////////////////////////////////////////////////////////////
  * implementaiton
  */
+std::atomic<int> gDone{0};
+
 static tb_void_t switchtask(tb_size_t cocount)
 {
     // loop
@@ -51,6 +54,9 @@ static tb_void_t switchtask(tb_size_t cocount)
             tb_size_t n = COUNT / cocount;
             for (j = 0; j < n; j++)
                 co_yield;
+
+            if (++gDone == cocount)
+                co_sched.Stop();
         };
     }
 }
@@ -72,7 +78,7 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
    
     // scheduling
     go [=]{ switchtask(cocount); };
-    co_sched.RunUntilNoTask();
+    co_sched.Start();
 
     // computing time
     duration = tb_mclock() - duration;
