@@ -1,5 +1,5 @@
 -- enable boost?
-if is_option("boost") then
+if has_config("boost") then
 
     -- add target
     target("coroutine_switch_boost")

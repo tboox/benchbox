@@ -1,5 +1,5 @@
 -- enable coroutine?
-if is_option("coroutine") then
+if has_config("coroutine") then
 
     -- add target
     target("coroutine_switch_coroutine")

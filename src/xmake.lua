@@ -21,7 +21,7 @@ for _, taskname in ipairs(os.dirs("*"), path.basename) do
             config.load()
 
             -- walk all tests
-            for _, testname in ipairs(os.dirs(format("%s/%s/%s/*", os.scriptdir(), taskname, casename)), path.basename) do
+            for _, testname in ipairs(os.dirs(path.join(os.scriptdir(), taskname, casename, "*")), path.basename) do
 
                 -- the target name
                 local targetname = taskname .. "_" .. casename .. "_" .. testname
@@ -68,4 +68,4 @@ for _, taskname in ipairs(os.dirs("*"), path.basename) do
 end
 
 -- add tests
-add_subfiles("**/xmake.lua")
+includes("**/xmake.lua")

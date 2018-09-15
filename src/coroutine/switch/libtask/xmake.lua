@@ -1,5 +1,5 @@
 -- enable libtask?
-if is_option("libtask") then
+if has_config("libtask") then
 
     -- add target
     target("coroutine_switch_libtask")

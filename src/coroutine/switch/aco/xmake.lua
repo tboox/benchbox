@@ -1,5 +1,5 @@
 -- enable aco?
-if is_option("aco") then
+if has_config("aco") then
 
     -- add target
     target("coroutine_switch_aco")

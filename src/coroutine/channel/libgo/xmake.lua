@@ -1,5 +1,5 @@
 -- enable libgo?
-if is_option("libgo") then
+if has_config("libgo") then
 
     -- add target
     target("coroutine_channel_libgo")

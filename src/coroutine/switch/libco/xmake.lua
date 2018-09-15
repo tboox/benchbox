@@ -1,5 +1,5 @@
 -- enable libco?
-if is_option("libco") then
+if has_config("libco") then
 
     -- add target
     target("coroutine_switch_libco")

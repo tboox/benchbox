@@ -1,5 +1,5 @@
 -- enable libfiber?
-if is_option("libfiber") then
+if has_config("libfiber") then
 
     -- add target
     target("coroutine_channel_libfiber")

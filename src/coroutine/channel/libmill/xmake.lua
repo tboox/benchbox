@@ -1,5 +1,5 @@
 -- enable libmill?
-if is_option("libmill") then
+if has_config("libmill") then
 
     -- add target
     target("coroutine_channel_libmill")

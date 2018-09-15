@@ -10,21 +10,8 @@ set_warnings("all")
 -- set language: c99, c++11
 set_languages("c99", "cxx11")
 
--- set the symbols visibility: hidden
-set_symbols("debug")
-
--- strip all symbols
-set_strip("all")
-
--- fomit the frame pointer
---add_cxflags("-fomit-frame-pointer")
---add_mxflags("-fomit-frame-pointer")
-
--- enable fastest optimization
-set_optimize("fastest")
-
--- attempt to add vector extensions 
-add_vectorexts("sse2", "sse3", "ssse3", "mmx")
+-- add rules: debug/release
+add_rules("mode.debug", "mode.release")
 
 -- for the windows platform (msvc)
 if is_plat("windows") then 
@@ -36,8 +23,16 @@ if is_plat("windows") then
     add_ldflags("-nodefaultlib:\"msvcrt.lib\"")
 end
 
--- add package directories
-add_packagedirs("pkg") 
+-- the base package
+option("base")
+    set_default(true)
+    if is_os("windows") then add_links("ws2_32") 
+    elseif is_os("android") then add_links("m", "c") 
+    else add_links("pthread", "dl", "m", "c") end
+option_end()
 
--- add subprojects
-add_subdirs("src")
+-- add requires
+add_requires("tbox", {config = {coroutine = true}})
+
+-- include sources
+includes("src")
