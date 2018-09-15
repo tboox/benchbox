@@ -1,3 +1,6 @@
+-- add requires
+add_requires("libmill")
+
 -- enable libmill?
 if has_config("libmill") then
 
