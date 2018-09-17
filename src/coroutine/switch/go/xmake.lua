@@ -1,31 +1,15 @@
--- add target
-target("coroutine_switch_go")
+-- add requires
+add_requires("go", {optional = true})
 
-    -- set kind
-    set_kind("binary")
+-- enable go?
+if has_config("go") then
 
-    -- not build
-    on_build(function() end)
+    -- add target
+    target("coroutine_switch_go")
 
-    -- run it
-    on_run(function ()
- 
-        -- imports
-        import("core.base.option")
+        -- set kind
+        set_kind("binary")
 
-        -- run go
-        try
-        {
-            function ()
-
-                -- get arguments
-                local args = ""
-                if option.get("arguments") then
-                    args = table.concat(option.get("arguments"), " ")
-                end
-
-                -- run it
-                os.exec("go run %s %s", path.join(os.scriptdir(), "main.go"), args)
-            end
-        }
-    end)
+        -- add files
+        add_files("*.go")
+end

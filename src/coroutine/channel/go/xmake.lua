@@ -1,8 +1,15 @@
--- add target
-target("coroutine_channel_go")
+-- add requires
+add_requires("go", {optional = true})
 
-    -- set kind
-    set_kind("binary")
+-- enable go?
+if has_config("go") then
 
-    -- add files
-    add_files("*.go")
+    -- add target
+    target("coroutine_channel_go")
+
+        -- set kind
+        set_kind("binary")
+
+        -- add files
+        add_files("*.go")
+end
