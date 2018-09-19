@@ -1,15 +1,16 @@
 -- add requires
 add_requires("go", {optional = true})
 
--- enable go?
-if has_config("go") then
+-- add target
+target("coroutine_channel_go")
 
-    -- add target
-    target("coroutine_channel_go")
+    -- set kind
+    set_kind("binary")
 
-        -- set kind
-        set_kind("binary")
+    -- add files
+    add_files("*.go")
 
-        -- add files
-        add_files("*.go")
-end
+    -- enable to build this target?
+    before_build(function (target)
+        target:set("enabled", has_config("go") and true or false)
+    end)

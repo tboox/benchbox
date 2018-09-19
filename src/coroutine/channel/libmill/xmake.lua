@@ -1,18 +1,19 @@
 -- add requires
 add_requires("libmill", {optional = true})
 
--- enable libmill?
-if has_config("libmill") then
+-- add target
+target("coroutine_channel_libmill")
 
-    -- add target
-    target("coroutine_channel_libmill")
+    -- set kind
+    set_kind("binary")
 
-        -- set kind
-        set_kind("binary")
+    -- add files
+    add_files("*.c")
 
-        -- add files
-        add_files("*.c")
+    -- add package
+    add_packages("libmill", "tbox", "base")
 
-        -- add package
-        add_packages("libmill", "tbox", "base")
-end
+    -- enable to build this target?
+    before_build(function (target)
+        target:set("enabled", has_config("libmill") and true or false)
+    end)
