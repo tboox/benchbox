@@ -1,8 +1,8 @@
 -- add requires
-add_requires("libtask", {optional = true})
+add_requires("libaco", {optional = true})
 
 -- add target
-target("coroutine_channel_libtask")
+target("coroutine_switch_libaco")
 
     -- set kind
     set_kind("binary")
@@ -11,9 +11,9 @@ target("coroutine_channel_libtask")
     add_files("*.c")
 
     -- add package
-    add_packages("libtask", "tbox", "base")
+    add_packages("libaco", "tbox", "base")
 
     -- enable to build this target?
     before_build(function (target)
-        target:set("enabled", has_config("libtask") and true or false)
+        target:set("enabled", has_config("libaco") and true or false)
     end)

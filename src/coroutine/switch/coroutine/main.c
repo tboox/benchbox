@@ -85,7 +85,7 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
         duration = tb_mclock() - duration;
 
         // trace
-        tb_trace_i("switch[%lu]: coroutine(cloudwu): %d switches in %lld ms, %lld switches per second", cocount, COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
+        tb_trace_i("switch[%lu]: coroutine(cloudwu): %d switches in %lld ms, %lld switches per second", cocount, COUNT, duration, duration? (((tb_hong_t)1000 * COUNT) / duration) : 0);
 
         // exit scheduler
         coroutine_close(scheduler);
