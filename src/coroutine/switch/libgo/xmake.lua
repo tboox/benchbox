@@ -1,15 +1,19 @@
--- enable libgo?
-if has_config("libgo") then
+-- add requires
+add_requires("libgo", {optional = true})
 
-    -- add target
-    target("coroutine_switch_libgo")
+-- add target
+target("coroutine_switch_libgo")
 
-        -- set kind
-        set_kind("binary")
+    -- set kind
+    set_kind("binary")
 
-        -- add files
-        add_files("*.cpp")
+    -- add files
+    add_files("*.cpp")
 
-        -- add package
-        add_packages("libgo", "tbox", "base")
-end
+    -- add package
+    add_packages("libgo", "tbox", "base")
+
+    -- enable to build this target?
+    before_build(function (target)
+        target:set("enabled", has_config("libgo") and true or false)
+    end)

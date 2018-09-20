@@ -13,6 +13,11 @@ target("coroutine_channel_libfiber")
     -- add package
     add_packages("libfiber", "tbox", "base")
 
+    -- add links
+    if is_plat("windows") then
+        add_links("kernel32", "user32", "gdi32", "winspool", "comdlg32", "advapi32", "ws2_32")
+    end
+
     -- enable to build this target?
     before_build(function (target)
         target:set("enabled", has_config("libfiber") and true or false)
