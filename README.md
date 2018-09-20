@@ -76,17 +76,6 @@ Benchbox是一个基准测试包，里面包含许多针对第三方库功能的
 
 例如：各大开源协程库性能基准测试，等等
 
-## 准备依赖包
-
-将需要待测试的库编译后放置在`./pkg/xxx.pkg`目录下。
-
-如果是使用xmake构建的库，可以直接通过下面的命令打包到此目录
-
-```console
-$ cd xxx
-$ xmake p -o ./benchmark/pkg
-```
-
 ## 编译
 
 请先安装: [xmake](http://xmake.io)
