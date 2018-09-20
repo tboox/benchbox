@@ -6,17 +6,6 @@
 
 Benchbox is a benchmark testing utilities.
 
-## Prepare dependence packages
-
-Build and copy libraries and headers to ./pkg/xxxx.pkg
-
-Or using xmake:
-
-```console
-$ cd xxx
-$ xmake p -o ./benchmark/pkg
-```
-
 ## Build
 
 Please install xmake first: [xmake](http://xmake.io)

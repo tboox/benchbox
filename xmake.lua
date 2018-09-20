@@ -34,5 +34,8 @@ option_end()
 -- add requires
 add_requires("tbox", {config = {coroutine = true}})
 
+-- add repositories
+add_repositories("benchbox-repo repo")
+
 -- include sources
 includes("src")

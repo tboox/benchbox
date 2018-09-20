@@ -27,14 +27,19 @@
  * includes
  */
 #include "tbox/tbox.h"
-#include "acl/lib_fiber.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <errno.h>
+#include <string.h>
+#include "fiber/libfiber.h"
 
 /* //////////////////////////////////////////////////////////////////////////////////////
  * macros
  */
 
 // the task stack size
-#define STACK       (32768)
+#define STACK       (64000)
 
 // the switch count
 #define COUNT       (10000000)
@@ -68,7 +73,7 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
 
     // init duration
     tb_hong_t duration = tb_mclock();
-   
+
     // scheduling
     acl_fiber_schedule();
 
@@ -76,7 +81,7 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     duration = tb_mclock() - duration;
 
     // trace
-    tb_trace_i("switch[%lu]: libfiber(acl): %d switches in %lld ms, %lld switches per second", cocount, COUNT, duration, (((tb_hong_t)1000 * COUNT) / duration));
+    tb_trace_i("switch[%lu]: libfiber(acl): %d switches in %lld ms, %lld switches per second", cocount, COUNT, duration, duration? (((tb_hong_t)1000 * COUNT) / duration) : 0);
 
     // exit tbox
     tb_exit();
