@@ -5,7 +5,7 @@ package("libaco")
 
     set_urls("https://github.com/hnes/libaco.git")
 
-    on_build("macosx", "linux", function (package)
+    on_install("macosx", "linux", function (package)
         io.writefile("xmake.lua", [[
             add_rules("mode.debug", "mode.release")
             target("aco")
@@ -14,10 +14,6 @@ package("libaco")
                 add_files("acosw.S")
                 add_headers("*.h")
         ]])
-        import("package.builder.xmake").build(package)
-    end)
-
-    on_install("macosx", "linux", function (package)
-        import("package.builder.xmake").install(package)
+        import("package.tools.xmake").install(package)
     end)
 

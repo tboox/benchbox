@@ -9,11 +9,7 @@ package("libgo")
         add_deps("cmake")
     end
 
-    on_build("macosx", "linux", function (package)
-        import("package.builder.cmake").build(package)
-    end)
-
     on_install("macosx", "linux", function (package)
-        import("package.builder.cmake").install(package)
+        import("package.tools.cmake").install(package)
     end)
 

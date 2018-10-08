@@ -5,11 +5,7 @@ package("coroutine")
 
     set_urls("https://github.com/cloudwu/coroutine.git")
 
-    on_build("linux", function (package)
-        import("package.builder.xmake").build(package)
-    end)
-
     on_install("linux", function (package)
-        import("package.builder.xmake").install(package)
+        import("package.tools.xmake").install(package)
         os.cp("coroutine.h", package:installdir("include", "coroutine"))
     end)

@@ -5,10 +5,6 @@ package("libfiber")
 
     set_urls("https://github.com/acl-dev/libfiber.git")
 
-    on_build(function (package)
-        import("package.builder.xmake").build(package)
-    end)
-
     on_install(function (package)
-        import("package.builder.xmake").install(package)
+        import("package.tools.xmake").install(package)
     end)

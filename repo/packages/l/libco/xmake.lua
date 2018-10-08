@@ -5,11 +5,8 @@ package("libco")
 
     set_urls("https://github.com/Tencent/libco.git")
 
-    on_build("macosx", "linux", function (package)
-        os.vrun("make")
-    end)
-
     on_install("macosx", "linux", function (package)
+        os.vrun("make")
         os.cp("*.h", package:installdir("include"))
         os.cp("lib/libcolib.a", package:installdir("lib"))
     end)
