@@ -15,5 +15,5 @@ target("coroutine_switch_libmill")
 
     -- enable to build this target?
     before_build(function (target)
-        target:set("enabled", has_config("libmill") and true or false)
+        target:set("enabled", has_package("libmill") and true or false)
     end)

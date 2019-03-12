@@ -15,5 +15,5 @@ target("coroutine_channel_libgo")
 
     -- enable to build this target?
     before_build(function (target)
-        target:set("enabled", has_config("libgo") and true or false)
+        target:set("enabled", has_package("libgo") and true or false)
     end)

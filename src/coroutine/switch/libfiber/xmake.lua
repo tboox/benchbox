@@ -20,5 +20,5 @@ target("coroutine_switch_libfiber")
 
     -- enable to build this target?
     before_build(function (target)
-        target:set("enabled", has_config("libfiber") and true or false)
+        target:set("enabled", has_package("libfiber") and true or false)
     end)

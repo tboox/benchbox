@@ -15,5 +15,5 @@ target("coroutine_switch_coroutine")
 
     -- enable to build this target?
     before_build(function (target)
-        target:set("enabled", has_config("coroutine") and true or false)
+        target:set("enabled", has_package("coroutine") and true or false)
     end)

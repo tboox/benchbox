@@ -15,5 +15,5 @@ target("coroutine_switch_libaco")
 
     -- enable to build this target?
     before_build(function (target)
-        target:set("enabled", has_config("libaco") and true or false)
+        target:set("enabled", has_package("libaco") and true or false)
     end)

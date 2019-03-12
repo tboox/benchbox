@@ -15,5 +15,5 @@ target("coroutine_switch_libtask")
 
     -- enable to build this target?
     before_build(function (target)
-        target:set("enabled", has_config("libtask") and true or false)
+        target:set("enabled", has_package("libtask") and true or false)
     end)

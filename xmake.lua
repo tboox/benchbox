@@ -3,6 +3,7 @@ set_project("benchbox")
 
 -- version
 set_version("1.0.1")
+set_xmakever("2.2.3")
 
 -- set warning all as error
 set_warnings("all")

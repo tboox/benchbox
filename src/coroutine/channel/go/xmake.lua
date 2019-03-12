@@ -12,5 +12,5 @@ target("coroutine_channel_go")
 
     -- enable to build this target?
     before_build(function (target)
-        target:set("enabled", has_config("go") and true or false)
+        target:set("enabled", has_package("go") and true or false)
     end)
