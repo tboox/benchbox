@@ -33,7 +33,8 @@ option("base")
 option_end()
 
 -- add requires
-add_requires("tbox", {config = {coroutine = true}})
+add_requires("tbox", {configs = {coroutine = true}})
+add_repositories("xmake-repo-dev https://github.com/xmake-io/xmake-repo.git dev")
 
 -- add repositories
 add_repositories("benchbox-repo repo")
