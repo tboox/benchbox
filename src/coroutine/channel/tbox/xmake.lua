@@ -8,4 +8,4 @@ target("coroutine_channel_tbox")
     add_files("*.c")
 
     -- add package
-    add_packages("tbox", "base")
+    add_packages("tbox")

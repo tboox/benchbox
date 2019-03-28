@@ -8,5 +8,5 @@ target("other_case1_test2")
     add_files("*.c")
 
     -- add package
-    add_packages("tbox", "base")
+    add_packages("tbox")
 

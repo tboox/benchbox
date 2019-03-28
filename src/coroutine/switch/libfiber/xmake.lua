@@ -11,7 +11,7 @@ target("coroutine_switch_libfiber")
     add_files("*.c")
 
     -- add package
-    add_packages("libfiber", "tbox", "base")
+    add_packages("libfiber", "tbox")
 
     -- add links
     if is_plat("windows") then

@@ -11,7 +11,7 @@ target("coroutine_switch_boost")
     add_files("*.cpp")
 
     -- add package
-    add_packages("boost", "tbox", "base")
+    add_packages("boost", "tbox")
 
     -- enable to build this target?
     before_build(function (target)

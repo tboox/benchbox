@@ -11,7 +11,7 @@ target("coroutine_switch_libco")
     add_files("*.cpp")
 
     -- add package
-    add_packages("libco", "tbox", "base")
+    add_packages("libco", "tbox")
 
     -- enable to build this target?
     before_build(function (target)

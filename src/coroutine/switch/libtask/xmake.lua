@@ -11,7 +11,7 @@ target("coroutine_switch_libtask")
     add_files("*.c")
 
     -- add package
-    add_packages("libtask", "tbox", "base")
+    add_packages("libtask", "tbox")
 
     -- enable to build this target?
     before_build(function (target)

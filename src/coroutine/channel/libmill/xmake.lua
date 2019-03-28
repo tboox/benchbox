@@ -11,7 +11,7 @@ target("coroutine_channel_libmill")
     add_files("*.c")
 
     -- add package
-    add_packages("libmill", "tbox", "base")
+    add_packages("libmill", "tbox")
 
     -- enable to build this target?
     before_build(function (target)

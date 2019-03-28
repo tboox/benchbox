@@ -11,7 +11,7 @@ target("coroutine_switch_libaco")
     add_files("*.c")
 
     -- add package
-    add_packages("libaco", "tbox", "base")
+    add_packages("libaco", "tbox")
 
     -- enable to build this target?
     before_build(function (target)

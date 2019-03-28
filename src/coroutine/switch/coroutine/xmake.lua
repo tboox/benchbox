@@ -11,7 +11,7 @@ target("coroutine_switch_coroutine")
     add_files("*.c")
 
     -- add package
-    add_packages("coroutine", "tbox", "base")
+    add_packages("coroutine", "tbox")
 
     -- enable to build this target?
     before_build(function (target)

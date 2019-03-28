@@ -11,7 +11,7 @@ target("coroutine_switch_libgo")
     add_files("*.cpp")
 
     -- add package
-    add_packages("libgo", "tbox", "base")
+    add_packages("libgo", "tbox")
 
     -- enable to build this target?
     before_build(function (target)
