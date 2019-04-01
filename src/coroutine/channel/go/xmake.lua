@@ -10,6 +10,9 @@ target("coroutine_channel_go")
     -- add files
     add_files("*.go")
 
+    -- add packages
+    add_packages("go")
+
     -- enable to build this target?
     before_build(function (target)
         target:set("enabled", has_package("go") and true or false)

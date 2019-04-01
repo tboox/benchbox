@@ -3,7 +3,7 @@ set_project("benchbox")
 
 -- version
 set_version("1.0.1")
-set_xmakever("2.2.3")
+set_xmakever("2.2.5")
 
 -- set warning all as error
 set_warnings("all")
@@ -37,7 +37,6 @@ end
 
 -- add requires
 add_requires("tbox", {configs = {coroutine = true}})
-add_repositories("xmake-repo-dev https://github.com/xmake-io/xmake-repo.git dev")
 
 -- add repositories
 add_repositories("benchbox-repo repo")
