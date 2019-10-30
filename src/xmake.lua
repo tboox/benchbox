@@ -1,7 +1,8 @@
 -- add tasks
-for _, taskname in ipairs(os.dirs("*"), path.basename) do
+for _, taskpath in ipairs(os.dirs("*")) do
 
     -- add task
+    local taskname = path.basename(taskpath)
     task(taskname)
 
         -- on run
@@ -21,9 +22,10 @@ for _, taskname in ipairs(os.dirs("*"), path.basename) do
             config.load()
 
             -- walk all tests
-            for _, testname in ipairs(os.dirs(path.join(os.scriptdir(), taskname, casename, "*")), path.basename) do
+            for _, testpath in ipairs(os.dirs(path.join(os.scriptdir(), taskname, casename, "*"))) do
 
                 -- the target name
+                local testname = path.basename(testpath)
                 local targetname = taskname .. "_" .. casename .. "_" .. testname
 
                 -- run the target task
@@ -54,7 +56,8 @@ for _, taskname in ipairs(os.dirs("*"), path.basename) do
 
                                                                     -- make description
                                                                     local description = {}
-                                                                    for i, casename in ipairs(os.dirs(format("%s/src/%s/*", project.directory(), taskname)), path.basename) do
+                                                                    for i, casepath in ipairs(os.dirs(format("%s/src/%s/*", project.directory(), taskname))) do
+                                                                        local casename = path.basename(casepath)
                                                                         description[i] = "    - " .. casename
                                                                     end
 
