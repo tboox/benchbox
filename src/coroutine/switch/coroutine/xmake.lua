@@ -14,6 +14,6 @@ target("coroutine_switch_coroutine")
     add_packages("coroutine", "tbox")
 
     -- enable to build this target?
-    before_build(function (target)
+    on_load(function (target)
         target:set("enabled", has_package("coroutine") and true or false)
     end)

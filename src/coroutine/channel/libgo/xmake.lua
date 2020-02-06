@@ -14,6 +14,6 @@ target("coroutine_channel_libgo")
     add_packages("libgo", "tbox")
 
     -- enable to build this target?
-    before_build(function (target)
+    on_load(function (target)
         target:set("enabled", has_package("libgo") and true or false)
     end)

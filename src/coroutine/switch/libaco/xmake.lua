@@ -14,6 +14,6 @@ target("coroutine_switch_libaco")
     add_packages("libaco", "tbox")
 
     -- enable to build this target?
-    before_build(function (target)
+    on_load(function (target)
         target:set("enabled", has_package("libaco") and true or false)
     end)

@@ -19,6 +19,6 @@ target("coroutine_channel_libfiber")
     end
 
     -- enable to build this target?
-    before_build(function (target)
+    on_load(function (target)
         target:set("enabled", has_package("libfiber") and true or false)
     end)

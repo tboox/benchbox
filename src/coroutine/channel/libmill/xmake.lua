@@ -14,6 +14,6 @@ target("coroutine_channel_libmill")
     add_packages("libmill", "tbox")
 
     -- enable to build this target?
-    before_build(function (target)
+    on_load(function (target)
         target:set("enabled", has_package("libmill") and true or false)
     end)
