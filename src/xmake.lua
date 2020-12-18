@@ -10,7 +10,7 @@ for _, taskpath in ipairs(os.dirs("*")) do
      
             -- imports
             import("core.base.option")
-            import("core.project.task")
+            import("core.base.task")
             import("core.project.config")
             import("core.project.project")
 
