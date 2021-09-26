@@ -7,7 +7,7 @@ for _, taskpath in ipairs(os.dirs("*")) do
 
         -- on run
         on_run(function ()
-     
+
             -- imports
             import("core.base.option")
             import("core.base.task")
@@ -29,9 +29,7 @@ for _, taskpath in ipairs(os.dirs("*")) do
                 local targetname = taskname .. "_" .. casename .. "_" .. testname
 
                 -- run the target task
-                if project.target(targetname) then
-                    task.run("run", {target = targetname, arguments = option.get("arguments")})
-                end
+                task.run("run", {target = targetname, arguments = option.get("arguments")})
             end
         end)
 
@@ -44,12 +42,12 @@ for _, taskpath in ipairs(os.dirs("*")) do
                     ,   description = "The " .. taskname .. " benchmark."
 
                         -- options
-                    ,   options = 
+                    ,   options =
                         {
-                            {'n', "casename",   "kv", nil,      "The case name."            
-                                                                
+                            {'n', "casename",   "kv", nil,      "The case name."
+
                                                                 -- show all cases
-                                                              , function () 
+                                                              , function ()
 
                                                                     -- imports
                                                                     import("core.project.project")
@@ -67,7 +65,7 @@ for _, taskpath in ipairs(os.dirs("*")) do
                         ,   {}
                         ,   {nil, "arguments",  "vs", nil,      "The script arguments."     }
                         }
-                    }) 
+                    })
 end
 
 -- add tests
